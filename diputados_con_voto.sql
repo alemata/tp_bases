@@ -1,31 +1,16 @@
-#Dame todos los diputados tal que no exista un voto para ese diputado de tipo ... para 
-#un proyecto de ley que sea estudiado por la comision que integra
-SELECT *
-FROM diputados d
-WHERE NOT EXISTS
-	(SELECT *
-	FROM votos
-	WHERE votos.ciudadano_id = d.id AND
-	votos.tipo_de_voto NOT IN ('afirmativo', 'ausente')
-	AND 
-	votos.proyecto_de_ley_id IN (
-		SELECT proyecto_de_ley_id 
-		FROM integrantes_comisiones i
-		JOIN proyectos_de_ley_comisiones p ON i.comision_id = p.comision_id
-		WHERE i.diputado_id = d.id
-	)
-) 
-AND EXISTS
-	(SELECT *
-	FROM votos
-	WHERE votos.ciudadano_id = d.id
-	AND 
-	votos.proyecto_de_ley_id IN (
-		SELECT proyecto_de_ley_id 
-		FROM integrantes_comisiones i
-		JOIN proyectos_de_ley_comisiones p ON i.comision_id = p.comision_id
-		WHERE i.diputado_id = d.id
-	)
+-- Simplifico todo en una sola vista
+CREATE VIEW voto_proyectos_que_pertenece AS
+SELECT i.diputado_id, p.proyecto_de_ley_id, v.tipo_de_voto
+FROM integrantes_comisiones i
+JOIN proyectos_de_ley_comisiones p ON i.comision_id = p.comision_id
+JOIN votos v ON v.ciudadano_id = i.diputado_id AND v.proyecto_de_ley_id = p.proyecto_de_ley_id;
+
+
+SELECT DISTINCT c.*
+FROM ciudadanos c
+INNER JOIN proyectos_de_ley_por_diputado p ON c.id = p.diputado_id
+WHERE c.id NOT IN (
+               SELECT DISTINCT diputado_id
+               FROM voto_proyectos_que_pertenece v
+               WHERE v.tipo_de_voto NOT IN ('afirmativo', 'ausente')
 );
-  
-  

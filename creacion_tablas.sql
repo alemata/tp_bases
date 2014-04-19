@@ -1,17 +1,17 @@
 #  Camaras
 CREATE TABLE camaras (
-    id VARCHAR(16) NOT NULL,
+    id VARCHAR(15) NOT NULL,
     PRIMARY KEY (id)
 );
 
 CREATE TABLE camara_senadores (
-    id VARCHAR(16) NOT NULL,
+    id VARCHAR(15) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES camaras(id) 
 );
 
 CREATE TABLE camara_diputados (
-    id VARCHAR(16) NOT NULL,
+    id VARCHAR(15) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES camaras(id) 
 );
@@ -19,10 +19,10 @@ CREATE TABLE camara_diputados (
 # Ciudadanos
 CREATE TABLE ciudadanos (
     id INT NOT NULL AUTO_INCREMENT,
-    dni VARCHAR(16),
+    dni VARCHAR(15),
     edad INT,
-    nombre VARCHAR(64),
-    apellido VARCHAR(64),
+    nombre VARCHAR(63),
+    apellido VARCHAR(63),
     PRIMARY KEY (id)
 );
 
@@ -41,7 +41,7 @@ CREATE TABLE empleados (
 # Provincia
 CREATE TABLE provincias (
     id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(32),
+    nombre VARCHAR(31),
     poblacion INT,
     PRIMARY KEY (id)
 );
@@ -50,7 +50,7 @@ CREATE TABLE provincias (
 # Ternaria entre camara, ciudadano y provincia
 CREATE TABLE representaciones (
     ciudadano_id INT NOT NULL,
-    camara_id VARCHAR(16) NOT NULL,
+    camara_id VARCHAR(15) NOT NULL,
     provincia_id INT NOT NULL,
     año INT NOT NULL,
     PRIMARY KEY (ciudadano_id, camara_id, provincia_id, año),
@@ -63,7 +63,7 @@ CREATE TABLE representaciones (
 # Relacion entre camara y ciudadanos
 CREATE TABLE presidentes_camaras (
     ciudadano_id INT NOT NULL,
-    camara_id VARCHAR(16) NOT NULL,
+    camara_id VARCHAR(15) NOT NULL,
     año INT NOT NULL, 
     PRIMARY KEY (ciudadano_id, camara_id, año),
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
@@ -75,7 +75,7 @@ CREATE TABLE presidentes_camaras (
 # Bloque politico
 CREATE TABLE bloques_politicos (
     id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(128),
+    nombre VARCHAR(127),
     PRIMARY KEY (id)
 );
 
@@ -104,7 +104,7 @@ CREATE TABLE bloques_politicos_ciudadanos_inegrantes (
 # Partido politico
 CREATE TABLE partidos_politicos (
     id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(128),
+    nombre VARCHAR(127),
     PRIMARY KEY (id)
 );
 
@@ -118,25 +118,6 @@ CREATE TABLE partidos_politicos_ciudadanos (
     FOREIGN KEY (partido_politico_id) REFERENCES partidos_politicos(id) 
 );
 
-# -------------------------------------------------------------# 
-
-# Bienes economicos
-CREATE TABLE bienes_economicos (
-    id INT NOT NULL AUTO_INCREMENT,
-    valor INT,
-    PRIMARY KEY (id)
-);
-
-# Bienes con ciudadanos
-CREATE TABLE bienes_economicos_ciudadanos (
-    bien_economico_id INT NOT NULL,
-    ciudadano_id INT NOT NULL,
-    año INT,
-    PRIMARY KEY (ciudadano_id, bien_economico_id, año),
-    FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
-    FOREIGN KEY (bien_economico_id) REFERENCES bienes_economicos(id) 
-);
-
 
 # -------------------------------------------------------------#  
 
@@ -145,7 +126,7 @@ CREATE TABLE sesiones (
     id INT NOT NULL AUTO_INCREMENT,
     fecha_inicio date,
     fecha_fin date,
-    camara_id VARCHAR(16) NOT NULL,
+    camara_id VARCHAR(15) NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (camara_id) REFERENCES camaras(id)
 );
@@ -162,8 +143,8 @@ CREATE TABLE controles (
 CREATE TABLE proyectos_de_ley (
       id INT NOT NULL AUTO_INCREMENT,
       fecha_inicio DATE,
-      camara_id VARCHAR(16) NOT NULL,
-      titulo VARCHAR(128),
+      camara_id VARCHAR(15) NOT NULL,
+      titulo VARCHAR(127),
       control_id INT, # aclara que se controla cada proyecto como mucho una vez
       PRIMARY KEY (id),
       FOREIGN KEY (camara_id) REFERENCES camaras(id),
@@ -183,7 +164,7 @@ CREATE TABLE leyes (
 
 # TipoVoto
 CREATE TABLE tipos_de_voto (
-    tipo VARCHAR(16) NOT NULL,
+    tipo VARCHAR(15) NOT NULL,
     PRIMARY KEY (tipo)	
 );
 
@@ -192,7 +173,7 @@ CREATE TABLE votos (
     ciudadano_id INT NOT NULL,
     sesion_id INT NOT NULL,
     proyecto_de_ley_id INT NOT NULL,
-    tipo_de_voto VARCHAR(16) NOT NULL,
+    tipo_de_voto VARCHAR(15) NOT NULL,
     PRIMARY KEY (ciudadano_id, proyecto_de_ley_id),
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
     FOREIGN KEY (sesion_id) REFERENCES sesiones(id),
@@ -204,7 +185,7 @@ CREATE TABLE votos (
 # Comision
 CREATE TABLE comisiones (
     id INT NOT NULL AUTO_INCREMENT,
-    nombre VARCHAR(128),
+    nombre VARCHAR(127),
     PRIMARY KEY (id)	
 );
 
@@ -240,7 +221,7 @@ CREATE TABLE proyectos_de_ley_comisiones (
 );
 
 CREATE TABLE  camara_diputados_comisiones(
-    camara_diputados_id VARCHAR(16) NOT NULL,
+    camara_diputados_id VARCHAR(15) NOT NULL,
     comision_id INT NOT NULL,
     año INT,
     PRIMARY KEY (camara_diputados_id, comision_id, año),
@@ -256,3 +237,24 @@ CREATE TABLE  asistencias(
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
     FOREIGN KEY (sesion_id) REFERENCES sesiones(id) 
 );
+
+ # Declaracion jurada
+ CREATE TABLE declaraciones_juradas (
+  	id INT NOT NULL AUTO_INCREMENT,
+	año INT NOT NULL,
+	ciudadano_id INT NOT NULL,
+	patrimonio FLOAT,
+	PRIMARY KEY (id),
+	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id)	
+ );
+ 
+  # Bienes economicos
+ CREATE TABLE bienes_economicos (
+  	id INT NOT NULL AUTO_INCREMENT,
+	valor FLOAT NOT NULL,
+	declaracion_jurada_id INT NOT NULL,
+	detalles VARCHAR(255),
+	PRIMARY KEY (id),
+	FOREIGN KEY (declaracion_jurada_id) REFERENCES declaraciones_juradas(id)
+ );
+

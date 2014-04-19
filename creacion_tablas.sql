@@ -1,17 +1,17 @@
 #Camaras
 CREATE TABLE camaras (
-	id INT NOT NULL AUTO_INCREMENT,
+	id VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id)
  );
  
 CREATE TABLE camara_senadores (
-	id INT NOT NULL,
+	id VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id),
  	FOREIGN KEY (id) REFERENCES camaras(id) 
  );
  
  CREATE TABLE camara_diputados (
- 	id INT NOT NULL,
+ 	id VARCHAR(20) NOT NULL,
  	PRIMARY KEY (id),
  	FOREIGN KEY (id) REFERENCES camaras(id) 
  );
@@ -50,7 +50,7 @@ CREATE TABLE camara_senadores (
  #Ternaria entre camara, ciudadano y provincia
  CREATE TABLE representaciones (
 	ciudadano_id INT NOT NULL,
-	camara_id INT NOT NULL,
+	camara_id VARCHAR(20) NOT NULL,
 	provincia_id INT NOT NULL,
 	año INT NOT NULL,
 	PRIMARY KEY (ciudadano_id, camara_id, provincia_id, año),
@@ -63,7 +63,7 @@ CREATE TABLE camara_senadores (
  #Relacion entre camara y ciudadanos
  CREATE TABLE presidentes_camaras (
 	ciudadano_id INT NOT NULL,
-	camara_id INT NOT NULL,
+	camara_id VARCHAR(20) NOT NULL,
 	año INT NOT NULL, 
 	PRIMARY KEY (ciudadano_id, camara_id, año),
 	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
@@ -146,7 +146,7 @@ CREATE TABLE camara_senadores (
   	id INT NOT NULL AUTO_INCREMENT,
 	fecha_inicio date,
 	fecha_fin date,
-	camara_id INT NOT NULL,
+	camara_id VARCHAR(20) NOT NULL,
 	PRIMARY KEY (id),
 	FOREIGN KEY (camara_id) REFERENCES camaras(id)
  );
@@ -164,7 +164,7 @@ CREATE TABLE controles (
  CREATE TABLE proyectos_de_ley (
   	id INT NOT NULL AUTO_INCREMENT,
 	fecha_inicio DATE,
-	camara_id INT NOT NULL,
+	camara_id VARCHAR(20) NOT NULL,
 	titulo VARCHAR(100),
 	control_id INT, #aclara que se controla cada proyecto como mucho una vez
 	PRIMARY KEY (id),
@@ -185,22 +185,21 @@ CREATE TABLE controles (
  
 #TipoVoto
  CREATE TABLE tipos_de_voto (
-  	id INT NOT NULL AUTO_INCREMENT,
-	tipo VARCHAR(100),
-	PRIMARY KEY (id)	
+	tipo VARCHAR(32) NOT NULL,
+	PRIMARY KEY (tipo)	
  );
  
  #Ternaria entre ciudadano, sesion y proyecto de ley
- CREATE TABLE voto (
+ CREATE TABLE votos (
 	ciudadano_id INT NOT NULL,
 	sesion_id INT NOT NULL,
 	proyecto_de_ley_id INT NOT NULL,
-	tipo_de_voto_id INT,
-	#deshabilitado TINYINT(1), #Boolean value: 1 for true 0 for false
-	PRIMARY KEY (ciudadano_id, sesion_id, proyecto_de_ley_id), #Va la sesion como PK? No es 1 la cardinalidad de sesion?
+	tipo_de_voto VARCHAR(32) NOT NULL,
+	PRIMARY KEY (ciudadano_id, proyecto_de_ley_id),
 	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
 	FOREIGN KEY (sesion_id) REFERENCES sesiones(id),
-	FOREIGN KEY (proyecto_de_ley_id) REFERENCES proyectos_de_ley(id)
+	FOREIGN KEY (proyecto_de_ley_id) REFERENCES proyectos_de_ley(id),
+	FOREIGN KEY (tipo_de_voto) REFERENCES tipos_de_voto(tipo)
  );
 
 
@@ -245,7 +244,7 @@ CREATE TABLE controles (
  
   
 CREATE TABLE  camara_diputados_comisiones(
-	camara_diputados_id INT NOT NULL,
+	camara_diputados_id VARCHAR(20) NOT NULL,
 	comision_id INT NOT NULL,
 	año INT,
 	PRIMARY KEY (camara_diputados_id, comision_id, año),

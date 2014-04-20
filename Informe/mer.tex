@@ -3,28 +3,34 @@ d)Detalle de los supuestos asumidos para la resolución del problema.
 
 
 \section{Modelo de Entidad Relación}
-
-(Guardamos historias de los partidos y bloque)
-(el presidente es elegido por sus pares)
-(tipos de sesiones?)
-(una comisión tiene un presidente?)
-(ciudadano -> legislador. Para poder def el empleado..)
-
-
-
 Las restricciones que no pueden ser modeladas en el diagrama son expresadas a continuación utilizando el lenguaje natural:
 \begin{itemize}
 	\item Por cada 33000 habitantes de una Provincia, deberá haber un Diputado que la represente en la Cámara de Diputados. 
 	\item Un Legislador puede ser Diputado si tiene más de 25 años.
 	\item Un Legislador puede ser Senador si tiene más de 30 años.
 	\item El Vicepresidente de la Nación no es Senador.
-	\item La Fecha de Inicio de una Sesión debe estar comprendida entre el 1 de Marzo hasta el 30 de noviembre del mismo año.	
+	\item El Vicepresidente de la Nación es Presidente de la Cámara de Senadores. 
+	\item El Presidente de la Cámara de Diputados debe ser Diputado. 
+	\item La Fecha de Inicio de una Sesión (menos la Extraordinaria) debe estar comprendida entre el 1 de Marzo hasta el 30 de noviembre del mismo año.	
+	\item La Sesión Extraordinaria pueden extender el Período Legislativo. 
 	\item La Fecha de Fin de una Sesión debe estar comprendida entre el 1 de Marzo hasta el 30 de noviembre del mismo año.
 	\item La Fecha de Inicio de una Sesión debe ser menor a la Fecha de Fin de la misma. 
 	\item Una Ley solo puede existir si su correspondiente proyecto fue aprobado por la mayoría de ambas Cámaras (de Diputados y de Senadores).
+	\item Los Legisladores de una Cámara solo pueden votar en un proyecto si la misma es la de origen o ya fue aprobada por esta.
 	\item En la Cámara de Diputados debe haber, en todo momento, 45 Comisiones Parlamentarias.
-	\item Un Legislador solo puede votar, o el mismo ser considerado válido, si tiene menos de 15 ausencias anuales.  
-
+	\item Un Diputado que sea presidente de una Comisión Parlamentaria no puede serlo en otra.   
+	\item Un Diputado que sea presidente de una Comisión Parlamentaria debe pertenecer a la misma. 
+	\item Un Legislador solo puede votar si tiene menos de 15 ausencias anuales, caso contrario estará deshabilitado.
+	\item Los bienes económicos deben ser declarados en su totalidad en cada cambio de año.
+	\item Un Ciudadano que asiste a una Sesión, debe ser Senador o Diputado. 
+	\item No puede haber dos Legisladores del mismo Partido Político en distintos Bloques políticos. 
+	\item Un Legislador pertenece a un voto que no es "Ausente", siempre y cuando haya asistido a la Sesión correspondiente.
+	\item Los Legisladores que pertenecen a alguna de las Cámaras, debieron realizar una Declaración Jurada de ese año.
+	\item La suma de los valores de los Bienes Económicos de una Declaración Jurada es igual al patrimonio de la misma. 
+	\item Una Ley solo existe, si el Proyecto de Ley del que proviene, fue aprobado por la mayoría de ambas Cámaras en dos Sesiones. 
+	\item Un Ciudadano solo puede pertenecer a la Cámara de Diputados si es un Diputado en ese momento.
+	\item Un Ciudadano solo puede pertenecer a la Cárama de Senadores si no es ni un Diputado ni un Empleado en ese momento. 	
+	
 \end{itemize}
 
 \section{Modelo Relacional}

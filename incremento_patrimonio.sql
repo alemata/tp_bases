@@ -1,5 +1,6 @@
 # Probando con otra cosita desde el primero
-SELECT c.*, (dpf.patrimonio / dpi.patrimonio - 1) * 100 incremento_porcentual
+SELECT c.id, c.nombre,c.apellido,
+IF (dpi.patrimonio = 0, 100, (dpf.patrimonio / dpi.patrimonio - 1) * 100) incremento_porcentual
 FROM declaraciones_juradas di
 INNER JOIN ciudadanos c ON c.id = di.ciudadano_id
 INNER JOIN declaraciones_juradas df ON di.ciudadano_id = df.ciudadano_id

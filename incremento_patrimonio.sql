@@ -9,5 +9,10 @@ WHERE df.año = (
 	SELECT MAX(año) 
 	FROM declaraciones_juradas dj 
 	WHERE dj.ciudadano_id = di.ciudadano_id)
+AND di.año = (
+	SELECT MIN(año) 
+	FROM declaraciones_juradas dj 
+	WHERE dj.ciudadano_id = di.ciudadano_id)	
 GROUP BY di.ciudadano_id
-ORDER BY di.año ASC;
+ORDER BY incremento_porcentual DESC
+LIMIT 10;

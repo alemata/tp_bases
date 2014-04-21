@@ -248,11 +248,6 @@ CREATE TABLE  asistencias(
 	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id)	
  );
  
-CREATE VIEW declaraciones_patrimonio AS
-SELECT declaraciones_juradas.id, COALESCE(SUM(valor),0) patrimonio
-FROM declaraciones_juradas 
-LEFT OUTER JOIN bienes_economicos ON declaraciones_juradas.id = bienes_economicos.declaracion_jurada_id
-GROUP BY declaraciones_juradas.id;
  
   # Bienes economicos
  CREATE TABLE bienes_economicos (
@@ -263,4 +258,10 @@ GROUP BY declaraciones_juradas.id;
 	PRIMARY KEY (id),
 	FOREIGN KEY (declaracion_jurada_id) REFERENCES declaraciones_juradas(id)
  );
+
+ CREATE VIEW declaraciones_patrimonio AS
+ SELECT declaraciones_juradas.id, COALESCE(SUM(valor),0) patrimonio
+ FROM declaraciones_juradas 
+ LEFT OUTER JOIN bienes_economicos ON declaraciones_juradas.id = bienes_economicos.declaracion_jurada_id
+ GROUP BY declaraciones_juradas.id;
 

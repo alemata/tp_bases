@@ -62,29 +62,29 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Cámara\_id (PK) (FK - Cámaras) \\
 	Provincia\_id (PK) (FK - Provincias) \\
-	Año
+	Año (PK) 
 	\item \textbf{Presidentes\_Cámaras} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos)\\
 	Cámara\_id (PK) (FK - Cámaras) \\
-	Año
+	Año (PK)
 	\item \textbf{Bloque Político} \\
 	id (PK) \\
 	Nombre
 	\item \textbf{Bloques Políticos\_Ciudadanos\_Presidentes} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
-	Año
+	Año (PK)
 	\item \textbf{Bloques Políticos\_Ciudadanos\_Integrantes} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
-	Año
+	Año (PK)
 	\item \textbf{Partidos Políticos} \\
 	id (PK) \\
 	Nombre 
 	\item \textbf{Partidos Políticos\_Ciudadanos} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Partido Político\_id (PK) (FK - Partidos Políticos)\\
-	Año
+	Año (PK)
 	\item \textbf{Sesiones} \\
 	id (PK) \\
 	Fecha\_inicio \\

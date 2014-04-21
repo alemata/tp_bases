@@ -8,7 +8,7 @@ JOIN votos v ON v.ciudadano_id = i.diputado_id AND v.proyecto_de_ley_id = p.proy
 
 SELECT DISTINCT c.*
 FROM ciudadanos c
-INNER JOIN proyectos_de_ley_por_diputado p ON c.id = p.diputado_id
+INNER JOIN voto_proyectos_que_pertenece p ON c.id = p.diputado_id
 WHERE c.id NOT IN (
                SELECT DISTINCT diputado_id
                FROM voto_proyectos_que_pertenece v

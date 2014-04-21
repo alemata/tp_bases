@@ -147,6 +147,8 @@ CREATE TABLE proyectos_de_ley (
       camara_id VARCHAR(15) NOT NULL,
       titulo VARCHAR(127),
       control_id INT, # aclara que se controla cada proyecto como mucho una vez
+      aprobado_diputados BOOLEAN,
+      aprobado_senadores BOOLEAN,
       PRIMARY KEY (id),
       FOREIGN KEY (camara_id) REFERENCES camaras(id),
       FOREIGN KEY (control_id) REFERENCES controles(id)

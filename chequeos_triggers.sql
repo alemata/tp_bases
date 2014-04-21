@@ -56,3 +56,23 @@ CREATE TRIGGER no_agregar_voto_ausente_si_asistencia
      	END IF;
      END;
 $$
+
+
+DELIMITER $$ 
+ 
+CREATE TRIGGER chequear_ley_aprobada_en_ambas_camaras
+     BEFORE INSERT ON leyes FOR EACH ROW
+     BEGIN
+        IF (EXISTS
+        		(SELECT id FROM proyectos_de_ley 
+        				   WHERE id = NEW.proyecto_de_ley_id AND
+        				   (aprobado_diputados = 0 OR
+        				   aprobado_senadores = 0)
+        		)
+        	)THEN 
+     		SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'No esta aprobado el proyecto en ambas camaras';
+     	END IF;
+     	
+     END;
+$$

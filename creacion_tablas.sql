@@ -56,7 +56,8 @@ CREATE TABLE representaciones (
     PRIMARY KEY (ciudadano_id, camara_id, provincia_id, año),
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
     FOREIGN KEY (camara_id) REFERENCES camaras(id),
-    FOREIGN KEY (provincia_id) REFERENCES provincias(id)
+    FOREIGN KEY (provincia_id) REFERENCES provincias(id),
+    CONSTRAINT unica_representacion_anual UNIQUE (ciudadano_id, año)
 );
 
 

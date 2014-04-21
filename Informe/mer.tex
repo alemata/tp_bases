@@ -1,11 +1,7 @@
-c)Modelo de Entidad Relación y Modelo Relacional derivado, utilizados para implementar la solución.
-d)Detalle de los supuestos asumidos para la resolución del problema.
-
-
 \section{Modelo de Entidad Relación}
 
-FOTO
-
+%\centerline{ }
+%\centerline{\includegraphics[width=0.5\textwidth]{}}
 
 Las restricciones que no pueden ser modeladas en el diagrama son expresadas a continuación utilizando el lenguaje natural:
 \begin{itemize}
@@ -37,9 +33,117 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 	
 \end{itemize}
 
+\newpage
+
 \section{Modelo Relacional}
 
-PONER TABLAS
+\begin{itemize}
+	\item \textbf{Cámara} \\
+	id (PK)
+	\item \textbf{Cámara Senadores} \\
+	id (PK) (FK - Cámaras)
+	\item \textbf{Cámara Diputados} \\
+	id (PK) (FK - Cámaras)
+	\item \textbf{Ciudadanos} \\
+	id (PK) \\
+	DNI \\
+	Edad \\
+	Nombre \\
+	Apellido
+	\item \textbf{Diputados} \\
+	id (PK) (FK - Ciudadanos)
+	\item \textbf{Empleados del PGC} \\
+	id (PK) (FK - Ciudadanos)
+	\item \textbf{Provincias} \\
+	id (PK) \\
+	Nombre \\
+	Población
+	\item \textbf{Representaciones} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos) \\
+	Cámara\_id (PK) (FK - Cámaras) \\
+	Provincia\_id (PK) (FK - Provincias) \\
+	Año
+	\item \textbf{Presidentes\_Cámaras} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos)\\
+	Cámara\_id (PK) (FK - Cámaras) \\
+	Año
+	\item \textbf{Bloque Político} \\
+	id (PK) \\
+	Nombre
+	\item \textbf{Bloques Políticos\_Ciudadanos\_Presidentes} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos) \\
+	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
+	Año
+	\item \textbf{Bloques Políticos\_Ciudadanos\_Integrantes} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos) \\
+	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
+	Año
+	\item \textbf{Partidos Políticos} \\
+	id (PK) \\
+	Nombre 
+	\item \textbf{Partidos Políticos\_Ciudadanos} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos) \\
+	Partido Político\_id (PK) (FK - Partidos Políticos)\\
+	Año
+	\item \textbf{Sesiones} \\
+	id (PK) \\
+	Fecha\_inicio \\
+	Fecha\_fin \\
+	Cámara\_id (FK - Cámaras)
+	\item \textbf{Controles} \\
+	id (PK) \\
+	Empleado\_id (FK - Empleados)
+	\item \textbf{Proyectos de Ley} \\
+	id (PK) \\
+	Fecha\_inicio \\
+	Cámara\_id (FK - Cámaras) \\ 
+	Título \\
+	Control\_id (FK - Controles)
+	\item \textbf{Leyes} \\
+	id (PK) \\
+	Año \\
+	Sesión\_id (FK - Sesiones) \\
+	Proyecto de Ley\_id (FK - Proyectos de Ley)
+	\item \textbf{Votos} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos) \\
+	Sesión\_id  (FK - Sesiones) \\
+	Proyecto de Ley\_id (PK) (FK - Proyectos de Ley) \\
+	Tipo de Voto
+ 	\item \textbf{Comisiones} \\
+ 	id (PK) \\
+ 	Nombre 
+	\item \textbf{Integrantes\_Comisiones} \\
+	Diputado\_id (PK) (FK - Diputados) \\
+	Comisión\_id (PK) (FK - Comisiones) \\
+	Año (PK) 
+	\item \textbf{Presidentes\_Comisiones} \\
+	Diputado\_id (PK) (FK - Diputados) \\
+	Comisión\_id (PK) (FK - Comisiones) \\
+	Año (PK)
+	\item \textbf{Proyectos de Ley\_Comisiones} \\
+	Proyecto de Ley\_id (PK) (PK - Proyectos de Ley) \\
+	Comisión\_id (PK) (PK - Comisiones) \\
+	Informante\_id (PK - Diputados)
+	\item \textbf{Cámara Diputados\_Comisiones }\\
+	Cámara Diputados\_id (PK) (FK - Cámara Diputados) \\
+	Comisión\_id  (PK) (FK - Comisiones) \\
+	Año (PK)
+	\item \textbf{Asistencias} \\
+	Ciudadano\_id (PK) (FK - Ciudadanos) \\
+	Sesión\_id (PK) (FK - Sesiones)
+	\item \textbf{Declaraciones Juradas} \\
+	id (PK) \\
+	Año \\
+	Ciudadano\_id (FK - Ciudadanos)
+	\item \textbf{Bienes Económicos} \\
+	id (PK) \\
+	Valor \\
+	Declaración Jurada\_id (FK - Declaraciones Juradas) \\
+	Detalles \\ 
+	
+\end{itemize}
+
+\newpage
 
 \section{Supuestos asumidos}
 La abstracción de la realidad se reduce a los cuidadanos que trabajan en la legislatura de la nación.
@@ -48,6 +152,4 @@ Se consideró como tipo de voto, además de 'positivo', 'negativo' y 'abstenció
 En ciertas relaciones, se decidió guardar la historia entre las entidades que participan de las mismas, a pesar de que no esté especificado claramente en el enunciado.
 
 
-\begin{itemize}
-	
-\end{itemize}	
+

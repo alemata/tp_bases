@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.6.14)
 # Database: congreso
-# Generation Time: 2014-04-22 00:36:09 +0000
+# Generation Time: 2014-04-22 13:53:38 +0000
 # ************************************************************
 
 
@@ -79,18 +79,18 @@ UNLOCK TABLES;
 LOCK TABLES `camaras` WRITE;
 /*!40000 ALTER TABLE `camaras` DISABLE KEYS */;
 
-INSERT INTO `camaras` (`id`, `tipo`, `año`)
+INSERT INTO `camaras` (`id`, `tipo`, `año`, `presidente_id`)
 VALUES
-	(1,'diputados',2010),
-	(3,'diputados',2011),
-	(5,'diputados',2012),
-	(7,'diputados',2013),
-	(9,'diputados',2014),
-	(2,'senadores',2010),
-	(4,'senadores',2011),
-	(6,'senadores',2012),
-	(8,'senadores',2013),
-	(10,'senadores',2014);
+	(1,'diputados',2010,1),
+	(2,'senadores',2010,5),
+	(3,'diputados',2011,1),
+	(4,'senadores',2011,5),
+	(5,'diputados',2012,1),
+	(6,'senadores',2012,5),
+	(7,'diputados',2013,1),
+	(8,'senadores',2013,5),
+	(9,'diputados',2014,1),
+	(10,'senadores',2014,5);
 
 /*!40000 ALTER TABLE `camaras` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -143,7 +143,8 @@ VALUES
 	(1,'33252352','1970-04-21','Alejandro','Mataloni'),
 	(2,'33234567','1970-04-21','Emiliano','Mancuso'),
 	(3,'33212345','1970-04-21','Marisol','Reartes'),
-	(4,'33434565','1970-04-21','Maria Lara','Gauder');
+	(4,'33434565','1970-04-21','Maria Lara','Gauder'),
+	(5,'25678323','1950-06-05','Aldo','Haydar');
 
 /*!40000 ALTER TABLE `ciudadanos` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -155,9 +156,9 @@ UNLOCK TABLES;
 LOCK TABLES `comisiones` WRITE;
 /*!40000 ALTER TABLE `comisiones` DISABLE KEYS */;
 
-INSERT INTO `comisiones` (`id`, `camara_diputados_id`, `nombre`)
+INSERT INTO `comisiones` (`id`, `camara_diputados_id`, `nombre`, `presidente_id`)
 VALUES
-	(1,1,'Comision 1');
+	(1,1,'Comision 1',2);
 
 /*!40000 ALTER TABLE `comisiones` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -217,9 +218,9 @@ UNLOCK TABLES;
 LOCK TABLES `integrantes_comisiones` WRITE;
 /*!40000 ALTER TABLE `integrantes_comisiones` DISABLE KEYS */;
 
-INSERT INTO `integrantes_comisiones` (`diputado_id`, `comision_id`, `año`)
+INSERT INTO `integrantes_comisiones` (`diputado_id`, `comision_id`)
 VALUES
-	(1,1,2010);
+	(1,1);
 
 /*!40000 ALTER TABLE `integrantes_comisiones` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -245,16 +246,6 @@ UNLOCK TABLES;
 
 
 # Dump of table partidos_politicos_ciudadanos
-# ------------------------------------------------------------
-
-
-
-# Dump of table presidentes_camaras
-# ------------------------------------------------------------
-
-
-
-# Dump of table presidentes_comisiones
 # ------------------------------------------------------------
 
 
@@ -295,7 +286,7 @@ LOCK TABLES `proyectos_de_ley_comisiones` WRITE;
 
 INSERT INTO `proyectos_de_ley_comisiones` (`proyecto_de_ley_id`, `comision_id`, `informante_id`)
 VALUES
-	(1,1,NULL);
+	(1,1,1);
 
 /*!40000 ALTER TABLE `proyectos_de_ley_comisiones` ENABLE KEYS */;
 UNLOCK TABLES;

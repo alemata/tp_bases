@@ -4,13 +4,25 @@ CREATE TABLE tipos_de_camara (
     PRIMARY KEY (tipo)
 );
 
+# Ciudadanos
+CREATE TABLE ciudadanos (
+    id INT NOT NULL AUTO_INCREMENT,
+    dni VARCHAR(15),
+    fecha_nacimiento DATE,
+    nombre VARCHAR(63),
+    apellido VARCHAR(63),
+    PRIMARY KEY (id)
+);
+
 #  Camaras
 CREATE TABLE camaras (
 	id INT NOT NULL AUTO_INCREMENT,
     tipo VARCHAR(15) NOT NULL,
     año INT NOT NULL,
+    presidente_id INT,
     PRIMARY KEY (id),
     FOREIGN KEY (tipo) REFERENCES tipos_de_camara(tipo),
+    FOREIGN KEY (presidente_id) REFERENCES ciudadanos(id),
     CONSTRAINT unicas_camaras_por_año UNIQUE (tipo, año)
 );
 
@@ -26,15 +38,7 @@ CREATE TABLE camaras_diputados (
     FOREIGN KEY (id) REFERENCES camaras(id) 
 );
 
-# Ciudadanos
-CREATE TABLE ciudadanos (
-    id INT NOT NULL AUTO_INCREMENT,
-    dni VARCHAR(15),
-    fecha_nacimiento DATE,
-    nombre VARCHAR(63),
-    apellido VARCHAR(63),
-    PRIMARY KEY (id)
-);
+
 
 CREATE TABLE diputados (
     id INT NOT NULL,	
@@ -66,17 +70,6 @@ CREATE TABLE representaciones (
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
     FOREIGN KEY (camara_id) REFERENCES camaras(id),
     FOREIGN KEY (provincia_id) REFERENCES provincias(id)
-);
-
-
-# Relacion entre camara y ciudadanos
-CREATE TABLE presidentes_camaras (
-    ciudadano_id INT NOT NULL,
-    camara_id INT NOT NULL,
-    año INT NOT NULL, 
-    PRIMARY KEY (ciudadano_id, camara_id, año),
-    FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
-    FOREIGN KEY (camara_id) REFERENCES camaras(id)
 );
 
 # -------------------------------------------------------------#
@@ -207,29 +200,21 @@ CREATE TABLE comisiones (
     id INT NOT NULL AUTO_INCREMENT,
     camara_diputados_id INT NOT NULL,
     nombre VARCHAR(127),
+    presidente_id INT,
     PRIMARY KEY (id),
-    FOREIGN KEY (camara_diputados_id) REFERENCES camaras_diputados(id)
+    FOREIGN KEY (camara_diputados_id) REFERENCES camaras_diputados(id),
+    FOREIGN KEY (presidente_id) REFERENCES diputados(id)
 );
 
 # Diputados con comisiones (pertenece)
 CREATE TABLE integrantes_comisiones (
     diputado_id INT NOT NULL,
     comision_id INT NOT NULL,
-    año INT,
-    PRIMARY KEY (diputado_id, comision_id, año),
+    PRIMARY KEY (diputado_id, comision_id),
     FOREIGN KEY (diputado_id) REFERENCES diputados(id),
     FOREIGN KEY (comision_id) REFERENCES comisiones(id) 
 );
 
-# Diputados con comisiones (presidente)
-CREATE TABLE presidentes_comisiones (
-    diputado_id INT NOT NULL,
-    comision_id INT NOT NULL,
-    año INT,
-    PRIMARY KEY (diputado_id, comision_id, año),
-    FOREIGN KEY (diputado_id) REFERENCES diputados(id),
-    FOREIGN KEY (comision_id) REFERENCES comisiones(id) 
-);
 
 # Proyectos de ley con comisiones
 CREATE TABLE proyectos_de_ley_comisiones (

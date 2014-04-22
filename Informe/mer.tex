@@ -5,33 +5,33 @@
 
 Las restricciones que no pueden ser modeladas en el diagrama son expresadas a continuación utilizando el lenguaje natural:
 \begin{itemize}
+	\item Solo existe, como máximo, una Cámara de Diputados y otra de Senadores por año. 
 	\item Por cada 33000 habitantes de una Provincia, deberá haber un Diputado que la represente en la Cámara de Diputados. 
 	\item Un Legislador puede ser Diputado si tiene más de 25 años.
 	\item Un Legislador puede ser Senador si tiene más de 30 años.
 	\item El Vicepresidente de la Nación no es Senador.
 	\item El Vicepresidente de la Nación es Presidente de la Cámara de Senadores. 
-	\item El Presidente de la Cámara de Diputados debe ser Diputado. 
+	\item El Presidente de la Cámara de Diputados debe ser Diputado en ese año. 
 	\item La Fecha de Inicio de una Sesión (menos la Extraordinaria) debe estar comprendida entre el 1 de Marzo hasta el 30 de noviembre del mismo año.	
 	\item La Sesión Extraordinaria pueden extender el Período Legislativo. 
-	\item La Fecha de Fin de una Sesión debe estar comprendida entre el 1 de Marzo hasta el 30 de noviembre del mismo año.
-	\item La Fecha de Inicio de una Sesión debe ser menor a la Fecha de Fin de la misma. 
+	\item La Fecha de Fin de una Sesión debe estar comprendida entre el 1 de Marzo hasta el 30 de Noviembre del mismo año.
+	\item La Fecha Inicio de una Sesión debe ser menor a la Fecha Fin de la misma. 
 	\item Una Ley solo puede existir si su correspondiente proyecto fue aprobado por la mayoría de ambas Cámaras (de Diputados y de Senadores).
 	\item Los Legisladores de una Cámara solo pueden votar en un proyecto si la misma es la de origen o ya fue aprobada por esta.
-	\item En la Cámara de Diputados debe haber, en todo momento, 45 Comisiones Parlamentarias.
+	\item En la Cámara de Diputados debe haber, en todo momento y como máximo, 45 Comisiones Parlamentarias.
 	\item Un Diputado que sea presidente de una Comisión Parlamentaria no puede serlo en otra.   
 	\item Un Diputado que sea presidente de una Comisión Parlamentaria debe pertenecer a la misma. 
 	\item Un Legislador solo puede votar si tiene menos de 15 ausencias anuales, caso contrario estará deshabilitado.
 	\item Los bienes económicos deben ser declarados en su totalidad en cada cambio de año.
 	\item Un Ciudadano que asiste a una Sesión, debe ser Senador o Diputado. 
 	\item No puede haber dos Legisladores del mismo Partido Político en distintos Bloques políticos. 
-	\item Un Legislador pertenece a un voto que no es "Ausente", siempre y cuando haya asistido a la Sesión correspondiente.
-	\item Los Legisladores que pertenecen a alguna de las Cámaras, debieron realizar una Declaración Jurada de ese año.
+	\item Un Legislador pertenece a un voto que no es ''Ausente'', siempre y cuando haya asistido a la Sesión correspondiente.
+	\item Los Legisladores que pertenecen a alguna de las Cámaras, debieron realizar una única Declaración Jurada de ese año.
 	\item La suma de los valores de los Bienes Económicos de una Declaración Jurada es igual al patrimonio de la misma. 
-	\item Una Ley solo existe, si el Proyecto de Ley del que proviene, fue aprobado por la mayoría de ambas Cámaras en dos Sesiones. 
 	\item Un Ciudadano solo puede pertenecer a la Cámara de Diputados si es un Diputado en ese momento.
 	\item Un Ciudadano solo puede pertenecer a la Cárama de Senadores si no es ni un Diputado ni un Empleado en ese momento. 
-	\item Cada proyecto de ley se controla una única vez.
-	
+	\item Si un Ciudadano asiste a una Sesión, entonces ambos deben pertenecer a la misma Cámara.
+
 \end{itemize}
 
 \newpage
@@ -40,102 +40,120 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 
 \begin{itemize}
 	\item \textbf{Cámara} \\
-	id (PK)
+	id (PK) \\
+	Tipo \\
+	Año \\
+	Presidente\_id (FK - Ciudadano)
+	
 	\item \textbf{Cámara Senadores} \\
-	id (PK) (FK - Cámaras)
+	id (PK) (FK - Cámaras) 
+	
 	\item \textbf{Cámara Diputados} \\
 	id (PK) (FK - Cámaras)
+	
 	\item \textbf{Ciudadanos} \\
 	id (PK) \\
 	DNI \\
-	Edad \\
+	Fecha Nacimiento \\
 	Nombre \\
 	Apellido
+	
 	\item \textbf{Diputados} \\
 	id (PK) (FK - Ciudadanos)
+	
 	\item \textbf{Empleados del PGC} \\
 	id (PK) (FK - Ciudadanos)
+	
 	\item \textbf{Provincias} \\
 	id (PK) \\
 	Nombre \\
 	Población
+	
 	\item \textbf{Representaciones} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Cámara\_id (PK) (FK - Cámaras) \\
-	Provincia\_id (PK) (FK - Provincias) \\
-	Año (PK) 
-	\item \textbf{Presidentes\_Cámaras} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos)\\
-	Cámara\_id (PK) (FK - Cámaras) \\
-	Año (PK)
+	Provincia\_id (PK) (FK - Provincias) 
+		
 	\item \textbf{Bloque Político} \\
 	id (PK) \\
 	Nombre
+	
 	\item \textbf{Bloques Políticos\_Ciudadanos\_Presidentes} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
 	Año (PK)
+	
 	\item \textbf{Bloques Políticos\_Ciudadanos\_Integrantes} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
 	Año (PK)
+	
 	\item \textbf{Partidos Políticos} \\
 	id (PK) \\
 	Nombre 
+	
 	\item \textbf{Partidos Políticos\_Ciudadanos} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Partido Político\_id (PK) (FK - Partidos Políticos)\\
 	Año (PK)
+	
 	\item \textbf{Sesiones} \\
 	id (PK) \\
 	Fecha\_inicio \\
 	Fecha\_fin \\
-	Cámara\_id (FK - Cámaras)
+	Cámara\_id (FK - Cámaras) \\
+	Tipo
+	
 	\item \textbf{Controles} \\
 	id (PK) \\
 	Empleado\_id (FK - Empleados)
+	
 	\item \textbf{Proyectos de Ley} \\
 	id (PK) \\
-	Fecha\_inicio \\
+	Fecha inicio \\
 	Cámara\_id (FK - Cámaras) \\ 
 	Título \\
-	Control\_id (FK - Controles)
+	Control\_id (FK - Controles) \\
+	Aprobado Diputados \\
+	Aprobado Senadores
+	
 	\item \textbf{Leyes} \\
 	id (PK) \\
 	Año \\
 	Sesión\_id (FK - Sesiones) \\
 	Proyecto de Ley\_id (FK - Proyectos de Ley)
+	
 	\item \textbf{Votos} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Sesión\_id  (FK - Sesiones) \\
 	Proyecto de Ley\_id (PK) (FK - Proyectos de Ley) \\
 	Tipo de Voto
+	
  	\item \textbf{Comisiones} \\
  	id (PK) \\
- 	Nombre 
+ 	Nombre \\
+ 	Cámara Diputados\_id (FK - Cámara Diputados) \\
+ 	Presidente\_id (FK - Diputados)
+ 	
 	\item \textbf{Integrantes\_Comisiones} \\
 	Diputado\_id (PK) (FK - Diputados) \\
-	Comisión\_id (PK) (FK - Comisiones) \\
-	Año (PK) 
-	\item \textbf{Presidentes\_Comisiones} \\
-	Diputado\_id (PK) (FK - Diputados) \\
-	Comisión\_id (PK) (FK - Comisiones) \\
-	Año (PK)
+	Comisión\_id (PK) (FK - Comisiones) 
+	
 	\item \textbf{Proyectos de Ley\_Comisiones} \\
 	Proyecto de Ley\_id (PK) (PK - Proyectos de Ley) \\
 	Comisión\_id (PK) (PK - Comisiones) \\
 	Informante\_id (PK - Diputados)
-	\item \textbf{Cámara Diputados\_Comisiones }\\
-	Cámara Diputados\_id (PK) (FK - Cámara Diputados) \\
-	Comisión\_id  (PK) (FK - Comisiones) \\
-	Año (PK)
+	
+	
 	\item \textbf{Asistencias} \\
 	Ciudadano\_id (PK) (FK - Ciudadanos) \\
 	Sesión\_id (PK) (FK - Sesiones)
+	
 	\item \textbf{Declaraciones Juradas} \\
 	id (PK) \\
 	Año \\
 	Ciudadano\_id (FK - Ciudadanos)
+	
 	\item \textbf{Bienes Económicos} \\
 	id (PK) \\
 	Valor \\
@@ -147,10 +165,17 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 \newpage
 
 \section{Supuestos asumidos}
-La abstracción de la realidad se reduce a los cuidadanos que trabajan en la legislatura de la nación.
-Por otro lado, se asume que un proyecto de ley solo puede ser controlado por un Control.
-Se consideró como tipo de voto, además de 'positivo', 'negativo' y 'abstención', los de 'ausente' y 'deshabilitado' por motivos de diseños.
+La abstracción de la realidad reduce a los cuidadanos para que sean únicamente aquellos que trabajan en la legislatura de la Nación.
+
+
+Por otro lado, se asume que un Proyecto de Ley solo puede ser controlado por un Control. 
+
+
+Se consideró como tipo de voto, además de ''positivo'' , ''negativo'' y ''abstención'', los de ''ausente'' y ''deshabilitado'' por motivos de diseño.
+
+
 En ciertas relaciones, se decidió guardar la historia entre las entidades que participan de las mismas, a pesar de que no esté especificado claramente en el enunciado.
+Además, se almacena en la tabla de Diputados todas las veces que un Ciudadano trabajó como Diputado. 
 
 
 

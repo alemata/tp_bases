@@ -1,17 +1,27 @@
-#  Camaras
-CREATE TABLE camaras (
-    id VARCHAR(15) NOT NULL,
-    PRIMARY KEY (id)
+# Tipos de Camaras
+CREATE TABLE tipos_de_camara (
+    tipo VARCHAR(15) NOT NULL,
+    PRIMARY KEY (tipo)
 );
 
-CREATE TABLE camara_senadores (
-    id VARCHAR(15) NOT NULL,
+#  Camaras
+CREATE TABLE camaras (
+	id INT NOT NULL AUTO_INCREMENT,
+    tipo VARCHAR(15) NOT NULL,
+    año INT NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (tipo) REFERENCES tipos_de_camara(tipo),
+    CONSTRAINT unicas_camaras_por_año UNIQUE (tipo, año)
+);
+
+CREATE TABLE camaras_senadores (
+    id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES camaras(id) 
 );
 
-CREATE TABLE camara_diputados (
-    id VARCHAR(15) NOT NULL,
+CREATE TABLE camaras_diputados (
+    id INT NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES camaras(id) 
 );
@@ -20,7 +30,7 @@ CREATE TABLE camara_diputados (
 CREATE TABLE ciudadanos (
     id INT NOT NULL AUTO_INCREMENT,
     dni VARCHAR(15),
-    edad INT,
+    fecha_nacimiento DATE,
     nombre VARCHAR(63),
     apellido VARCHAR(63),
     PRIMARY KEY (id)
@@ -50,21 +60,19 @@ CREATE TABLE provincias (
 # Ternaria entre camara, ciudadano y provincia
 CREATE TABLE representaciones (
     ciudadano_id INT NOT NULL,
-    camara_id VARCHAR(15) NOT NULL,
+    camara_id INT NOT NULL,
     provincia_id INT NOT NULL,
-    año INT NOT NULL,
-    PRIMARY KEY (ciudadano_id, camara_id, provincia_id, año),
+    PRIMARY KEY (ciudadano_id, camara_id, provincia_id),
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
     FOREIGN KEY (camara_id) REFERENCES camaras(id),
-    FOREIGN KEY (provincia_id) REFERENCES provincias(id),
-    CONSTRAINT unica_representacion_anual UNIQUE (ciudadano_id, año)
+    FOREIGN KEY (provincia_id) REFERENCES provincias(id)
 );
 
 
 # Relacion entre camara y ciudadanos
 CREATE TABLE presidentes_camaras (
     ciudadano_id INT NOT NULL,
-    camara_id VARCHAR(15) NOT NULL,
+    camara_id INT NOT NULL,
     año INT NOT NULL, 
     PRIMARY KEY (ciudadano_id, camara_id, año),
     FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
@@ -122,14 +130,23 @@ CREATE TABLE partidos_politicos_ciudadanos (
 
 # -------------------------------------------------------------#  
 
+# Tipos de Camaras
+CREATE TABLE tipos_de_sesion (
+    tipo VARCHAR(15) NOT NULL,
+    PRIMARY KEY (tipo)
+);
+
+
 # Sesion
 CREATE TABLE sesiones (
     id INT NOT NULL AUTO_INCREMENT,
     fecha_inicio date,
     fecha_fin date,
-    camara_id VARCHAR(15) NOT NULL,
+    camara_id INT NOT NULL,
+    tipo VARCHAR(15) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (camara_id) REFERENCES camaras(id)
+    FOREIGN KEY (camara_id) REFERENCES camaras(id),
+    FOREIGN KEY (tipo) REFERENCES tipos_de_sesion(tipo)
 );
 
 # Control
@@ -144,11 +161,11 @@ CREATE TABLE controles (
 CREATE TABLE proyectos_de_ley (
       id INT NOT NULL AUTO_INCREMENT,
       fecha_inicio DATE,
-      camara_id VARCHAR(15) NOT NULL,
+      camara_id INT NOT NULL,
       titulo VARCHAR(127),
       control_id INT, # aclara que se controla cada proyecto como mucho una vez
-      aprobado_diputados BOOLEAN,
-      aprobado_senadores BOOLEAN,
+      aprobado_diputados BOOLEAN DEFAULT 0,
+      aprobado_senadores BOOLEAN DEFAULT 0,
       PRIMARY KEY (id),
       FOREIGN KEY (camara_id) REFERENCES camaras(id),
       FOREIGN KEY (control_id) REFERENCES controles(id)
@@ -188,8 +205,10 @@ CREATE TABLE votos (
 # Comision
 CREATE TABLE comisiones (
     id INT NOT NULL AUTO_INCREMENT,
+    camara_diputados_id INT NOT NULL,
     nombre VARCHAR(127),
-    PRIMARY KEY (id)	
+    PRIMARY KEY (id),
+    FOREIGN KEY (camara_diputados_id) REFERENCES camaras_diputados(id)
 );
 
 # Diputados con comisiones (pertenece)
@@ -223,15 +242,6 @@ CREATE TABLE proyectos_de_ley_comisiones (
     FOREIGN KEY (informante_id) REFERENCES diputados(id)  
 );
 
-CREATE TABLE  camara_diputados_comisiones(
-    camara_diputados_id VARCHAR(15) NOT NULL,
-    comision_id INT NOT NULL,
-    año INT,
-    PRIMARY KEY (camara_diputados_id, comision_id, año),
-    FOREIGN KEY (camara_diputados_id) REFERENCES camara_diputados(id),
-    FOREIGN KEY (comision_id) REFERENCES comisiones(id) 
-);
-
 # Relacion ciudadanos sesiones (asistencias) 
 CREATE TABLE  asistencias(
     ciudadano_id INT NOT NULL,
@@ -247,7 +257,8 @@ CREATE TABLE  asistencias(
 	año INT NOT NULL,
 	ciudadano_id INT NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id)	
+	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
+	CONSTRAINT unica_declaracion_por_año UNIQUE (año, ciudadano_id)
  );
  
  
@@ -262,8 +273,7 @@ CREATE TABLE  asistencias(
  );
 
  CREATE VIEW declaraciones_patrimonio AS
- SELECT declaraciones_juradas.id, COALESCE(SUM(valor),0) patrimonio
+ SELECT declaraciones_juradas.id declaracion_id, COALESCE(SUM(valor),0) patrimonio
  FROM declaraciones_juradas 
  LEFT OUTER JOIN bienes_economicos ON declaraciones_juradas.id = bienes_economicos.declaracion_jurada_id
  GROUP BY declaraciones_juradas.id;
-

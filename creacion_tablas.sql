@@ -237,29 +237,21 @@ CREATE TABLE  asistencias(
     FOREIGN KEY (sesion_id) REFERENCES sesiones(id) 
 );
 
- # Declaracion jurada
- CREATE TABLE declaraciones_juradas (
-  	id INT NOT NULL AUTO_INCREMENT,
-	año INT NOT NULL,
-	ciudadano_id INT NOT NULL,
-	PRIMARY KEY (id),
-	FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id),
-	CONSTRAINT unica_declaracion_por_año UNIQUE (año, ciudadano_id)
- );
- 
- 
-  # Bienes economicos
- CREATE TABLE bienes_economicos (
-  	id INT NOT NULL AUTO_INCREMENT,
-	valor FLOAT NOT NULL,
-	declaracion_jurada_id INT NOT NULL,
-	detalles VARCHAR(255),
-	PRIMARY KEY (id),
-	FOREIGN KEY (declaracion_jurada_id) REFERENCES declaraciones_juradas(id)
- );
+# Bienes economicos
+CREATE TABLE bienes_economicos (
+  id INT NOT NULL AUTO_INCREMENT,
+  ciudadano_id INT NOT NULL,
+  valor FLOAT NOT NULL,
+  año INT NOT NULL,
+  detalles VARCHAR(255),
+  PRIMARY KEY (id),
+  FOREIGN KEY (ciudadano_id) REFERENCES ciudadanos(id)
+);
 
- CREATE VIEW declaraciones_patrimonio AS
- SELECT declaraciones_juradas.id declaracion_id, COALESCE(SUM(valor),0) patrimonio
- FROM declaraciones_juradas 
- LEFT OUTER JOIN bienes_economicos ON declaraciones_juradas.id = bienes_economicos.declaracion_jurada_id
- GROUP BY declaraciones_juradas.id;
+CREATE VIEW declaraciones_juradas AS
+SELECT ciudadano_id, año, COALESCE(SUM(valor),0) patrimonio
+FROM bienes_economicos
+GROUP BY año, ciudadano_id;
+
+
+

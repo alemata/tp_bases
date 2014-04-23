@@ -41,18 +41,22 @@ UNLOCK TABLES;
 LOCK TABLES `bienes_economicos` WRITE;
 /*!40000 ALTER TABLE `bienes_economicos` DISABLE KEYS */;
 
-INSERT INTO `bienes_economicos` (`id`, `valor`, `declaracion_jurada_id`, `detalles`)
+INSERT INTO `bienes_economicos` (`id`, `valor`, `año`, `ciudadano_id`, `detalles`)
 VALUES
-	(1,10,1,'Auto'),
-	(2,20,2,'Auto'),
-	(3,10,3,'Auto'),
-	(4,20,4,'Auto'),
-	(5,10,5,'Auto'),
-	(6,20,6,'Auto'),
-	(7,10,7,'Auto'),
-	(8,20,8,'Auto'),
-	(9,30,9,'Auto, Moto'),
-	(10,30,10,'Auto, Bici');
+  (1,10,2010,1,'Auto'),
+  (2,20,2010,2,'Auto'),
+  (3,10,2011,1,'Auto'),
+  (4,20,2011,2,'Auto'),
+  (5,10,2012,1,'Auto'),
+  (6,20,2012,2,'Auto'),
+  (7,10,2013,1,'Auto'),
+  (8,20,2013,2,'Auto'),
+  (9,20,2014,1,'Auto'),
+  (10,10,2014,1,'Bici'),
+  (11,15,2014,2,'Auto'),
+  (12,15,2014,2,'Moto'),
+  (13,50,2010,1,'Barco');
+
 
 /*!40000 ALTER TABLE `bienes_economicos` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -162,35 +166,6 @@ VALUES
 
 /*!40000 ALTER TABLE `comisiones` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
-# Dump of table controles
-# ------------------------------------------------------------
-
-
-
-# Dump of table declaraciones_juradas
-# ------------------------------------------------------------
-
-LOCK TABLES `declaraciones_juradas` WRITE;
-/*!40000 ALTER TABLE `declaraciones_juradas` DISABLE KEYS */;
-
-INSERT INTO `declaraciones_juradas` (`id`, `año`, `ciudadano_id`)
-VALUES
-	(1,2010,1),
-	(2,2010,2),
-	(3,2011,1),
-	(4,2011,2),
-	(5,2012,1),
-	(6,2012,2),
-	(7,2013,1),
-	(8,2013,2),
-	(9,2014,1),
-	(10,2014,2);
-
-/*!40000 ALTER TABLE `declaraciones_juradas` ENABLE KEYS */;
-UNLOCK TABLES;
-
 
 # Dump of table diputados
 # ------------------------------------------------------------

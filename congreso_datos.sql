@@ -374,8 +374,8 @@ INSERT INTO `votos` (`ciudadano_id`, `sesion_id`, `proyecto_de_ley_id`, `tipo_de
 VALUES
 	(1,1,1,'afirmativo'),
 	(2,1,1,'afirmativo'),
-	(3,1,1,'afirmativo'),
-	(4,1,1,'afirmativo');
+	(3,2,1,'afirmativo'),
+	(4,2,1,'afirmativo');
 
 /*!40000 ALTER TABLE `votos` ENABLE KEYS */;
 UNLOCK TABLES;

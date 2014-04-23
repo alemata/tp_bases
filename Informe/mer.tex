@@ -1,7 +1,10 @@
+\begin{landscape}
+
 \section{Modelo de Entidad Relación}
 
-%\centerline{ }
-%\centerline{\includegraphics[width=0.5\textwidth]{}}
+\includegraphics[width=1.6\textwidth]{CongresoDeAlgunaNacion.png}
+
+\end{landscape}
 
 Las restricciones que no pueden ser modeladas en el diagrama son expresadas a continuación utilizando el lenguaje natural:
 \begin{itemize}
@@ -47,120 +50,115 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 	Presidente\_id (FK - Ciudadano)
 	
 	\item \textbf{Cámara Senadores} \\
-	id (PK) (FK - Cámaras) 
+	id (PK) (FK - Cámara) 
 	
 	\item \textbf{Cámara Diputados} \\
-	id (PK) (FK - Cámaras)
+	id (PK) (FK - Cámara)
 	
-	\item \textbf{Ciudadanos} \\
+	\item \textbf{Ciudadano} \\
 	id (PK) \\
 	DNI \\
 	Fecha Nacimiento \\
 	Nombre \\
 	Apellido
 	
-	\item \textbf{Diputados} \\
-	id (PK) (FK - Ciudadanos)
+	\item \textbf{Diputado} \\
+	id (PK) (FK - Ciudadano)
 	
-	\item \textbf{Empleados del PGC} \\
-	id (PK) (FK - Ciudadanos) \\
+	\item \textbf{Empleado del PGC} \\
+	id (PK) (FK - Ciudadano) \\
 	Año
 	
-	\item \textbf{Provincias} \\
+	\item \textbf{Provincia} \\
 	id (PK) \\
 	Nombre \\
 	Población
 	
 	\item \textbf{Representaciones} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos) \\
-	Cámara\_id (PK) (FK - Cámaras) \\
-	Provincia\_id (PK) (FK - Provincias) 
+	Ciudadano\_id (PK) (FK - Ciudadano) \\
+	Cámara\_id (PK) (FK - Cámara) \\
+	Provincia\_id (PK) (FK - Provincia) 
 		
 	\item \textbf{Bloque Político} \\
 	id (PK) \\
 	Nombre
 	
 	\item \textbf{Bloques Políticos\_Ciudadanos\_Presidentes} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos) \\
-	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
+	Ciudadano\_id (PK) (FK - Ciudadano) \\
+	Bloque Político\_id (PK) (FK - Bloque Político)\\
 	Año (PK)
 	
 	\item \textbf{Bloques Políticos\_Ciudadanos\_Integrantes} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos) \\
-	Bloque Político\_id (PK) (FK - Bloques Políticos)\\
+	Ciudadano\_id (PK) (FK - Ciudadano) \\
+	Bloque Político\_id (PK) (FK - Bloque Político)\\
 	Año (PK)
 	
-	\item \textbf{Partidos Políticos} \\
+	\item \textbf{Partido Político} \\
 	id (PK) \\
 	Nombre 
 	
 	\item \textbf{Partidos Políticos\_Ciudadanos} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos) \\
-	Partido Político\_id (PK) (FK - Partidos Políticos)\\
+	Ciudadano\_id (PK) (FK - Ciudadano) \\
+	Partido Político\_id (PK) (FK - Partido Político)\\
 	Año (PK)
 	
-	\item \textbf{Sesiones} \\
+	\item \textbf{Sesión} \\
 	id (PK) \\
 	Fecha\_inicio \\
 	Fecha\_fin \\
-	Cámara\_id (FK - Cámaras) \\
+	Cámara\_id (FK - Cámara) \\
 	Tipo
 	
-	\item \textbf{Controles} \\
+	\item \textbf{Control} \\
 	id (PK) \\
-	Empleado\_id (FK - Empleados)
+	Empleado\_id (FK - Empleado del PGC)
 	
-	\item \textbf{Proyectos de Ley} \\
+	\item \textbf{Proyecto de Ley} \\
 	id (PK) \\
 	Fecha inicio \\
-	Cámara\_id (FK - Cámaras) \\ 
+	Cámara\_id (FK - Cámara) \\ 
 	Título \\
-	Control\_id (FK - Controles) \\
+	Control\_id (FK - Control) \\
 	Aprobado Diputados \\
 	Aprobado Senadores
 	
-	\item \textbf{Leyes} \\
+	\item \textbf{Ley} \\
 	id (PK) \\
 	Año \\
-	Sesión\_id (FK - Sesiones) \\
-	Proyecto de Ley\_id (FK - Proyectos de Ley)
+	Sesión\_id (FK - Sesión) \\
+	Proyecto de Ley\_id (FK - Proyecto de Ley)
 	
 	\item \textbf{Votos} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos) \\
-	Sesión\_id  (FK - Sesiones) \\
-	Proyecto de Ley\_id (PK) (FK - Proyectos de Ley) \\
+	Ciudadano\_id (PK) (FK - Ciudadano) \\
+	Sesión\_id  (FK - Sesión) \\
+	Proyecto de Ley\_id (PK) (FK - Proyecto de Ley) \\
 	Tipo de Voto
 	
- 	\item \textbf{Comisiones} \\
+ 	\item \textbf{Comisión} \\
  	id (PK) \\
  	Nombre \\
  	Cámara Diputados\_id (FK - Cámara Diputados) \\
- 	Presidente\_id (FK - Diputados)
+ 	Presidente\_id (FK - Diputado)
  	
 	\item \textbf{Integrantes\_Comisiones} \\
-	Diputado\_id (PK) (FK - Diputados) \\
-	Comisión\_id (PK) (FK - Comisiones) 
+	Diputado\_id (PK) (FK - Diputado) \\
+	Comisión\_id (PK) (FK - Comisión) 
 	
 	\item \textbf{Proyectos de Ley\_Comisiones} \\
-	Proyecto de Ley\_id (PK) (PK - Proyectos de Ley) \\
-	Comisión\_id (PK) (PK - Comisiones) \\
-	Informante\_id (PK - Diputados)
-	
+	Proyecto de Ley\_id (PK) (PK - Proyecto de Ley) \\
+	Comisión\_id (PK) (PK - Comisión) \\
+	Informante\_id (PK - Diputado)
 	
 	\item \textbf{Asistencias} \\
-	Ciudadano\_id (PK) (FK - Ciudadanos) \\
-	Sesión\_id (PK) (FK - Sesiones)
-	
-	\item \textbf{Declaraciones Juradas} \\
-	id (PK) \\
-	Año \\
-	Ciudadano\_id (FK - Ciudadanos)
-	
-	\item \textbf{Bienes Económicos} \\
+	Ciudadano\_id (PK) (FK - Ciudadano) \\
+	Sesión\_id (PK) (FK - Sesión)
+		
+	\item \textbf{Bien Económico} \\
 	id (PK) \\
 	Valor \\
-	Declaración Jurada\_id (FK - Declaraciones Juradas) \\
 	Detalles \\ 
+	Año \\
+	Ciudadano\_id (FK - Ciudadano)
 	
 \end{itemize}
 

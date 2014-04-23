@@ -16,12 +16,25 @@ CREATE TRIGGER chequear_edad_senadores
      BEFORE INSERT ON representaciones FOR EACH ROW
      BEGIN
         IF NEW.camara_id = 'senadores' AND 
-           (year(now()) - (SELECT year(fecha_nacimiento) FROM ciudadanos WHERE id = NEW.ciudadano_id)) < 25 THEN 
+           (year(now()) - (SELECT year(fecha_nacimiento) FROM ciudadanos WHERE id = NEW.ciudadano_id)) < 30 THEN 
      		SIGNAL SQLSTATE '45000'
                     SET MESSAGE_TEXT = 'No se puede ser senador con esa edad';
      	END IF;
      	
      END;
+$$
+
+DELIMITER $$
+
+CREATE TRIGGER chequear_edad_ciudadanos
+	BEFORE INSERT ON ciudadanos FOR EACH ROW
+	BEGIN
+		IF (year(now()) - year(NEW.fecha_nacimiento)) < 18 THEN 
+			SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'No puede ingresar un ciudadano menor a 18 años';
+		END IF;
+		
+	END;
 $$
 
 DELIMITER $$

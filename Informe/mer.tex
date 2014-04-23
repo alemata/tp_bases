@@ -5,32 +5,32 @@
 
 Las restricciones que no pueden ser modeladas en el diagrama son expresadas a continuación utilizando el lenguaje natural:
 \begin{itemize}
-	\item Solo existe, como máximo, una Cámara de Diputados y otra de Senadores por año. 
+	\item Solo existe, a lo sumo, una Cámara de Diputados y otra de Senadores por año. 
 	\item Por cada 33000 habitantes de una Provincia, deberá haber un Diputado que la represente en la Cámara de Diputados. 
 	\item Un Legislador puede ser Diputado si tiene más de 25 años.
 	\item Un Legislador puede ser Senador si tiene más de 30 años.
 	\item El Vicepresidente de la Nación no es Senador.
 	\item El Vicepresidente de la Nación es Presidente de la Cámara de Senadores. 
-	\item El Presidente de la Cámara de Diputados debe ser Diputado en ese año. 
+	\item El Presidente de la Cámara de Diputados debe ser Diputado de la misma, en ese año. 
 	\item La Fecha de Inicio de una Sesión (menos la Extraordinaria) debe estar comprendida entre el 1 de Marzo hasta el 30 de noviembre del mismo año.	
-	\item La Sesión Extraordinaria pueden extender el Período Legislativo. 
+	\item La Sesión Extraordinaria puede extender el Período Legislativo. 
 	\item La Fecha de Fin de una Sesión debe estar comprendida entre el 1 de Marzo hasta el 30 de Noviembre del mismo año.
 	\item La Fecha Inicio de una Sesión debe ser menor a la Fecha Fin de la misma. 
 	\item Una Ley solo puede existir si su correspondiente proyecto fue aprobado por la mayoría de ambas Cámaras (de Diputados y de Senadores).
 	\item Los Legisladores de una Cámara solo pueden votar en un proyecto si la misma es la de origen o ya fue aprobada por esta.
-	\item En la Cámara de Diputados debe haber, en todo momento y como máximo, 45 Comisiones Parlamentarias.
-	\item Un Diputado que sea presidente de una Comisión Parlamentaria no puede serlo en otra.   
+	\item En la Cámara de Diputados debe haber a lo sumo 45 Comisiones Parlamentarias.
+	\item Un Diputado no puede ser presidente de dos Comisiones Parlamentarias en un mismo año.
 	\item Un Diputado que sea presidente de una Comisión Parlamentaria debe pertenecer a la misma. 
-	\item Un Legislador solo puede votar si tiene menos de 15 ausencias anuales, caso contrario estará deshabilitado.
-	\item Los bienes económicos deben ser declarados en su totalidad en cada cambio de año.
-	\item Un Ciudadano que asiste a una Sesión, debe ser Senador o Diputado. 
-	\item No puede haber dos Legisladores del mismo Partido Político en distintos Bloques políticos. 
-	\item Un Legislador pertenece a un voto que no es ''Ausente'', siempre y cuando haya asistido a la Sesión correspondiente.
+	\item Un Legislador solo puede votar si tiene menos de 15 ausencias anuales, caso contrario estará deshabilitado durante ese período legislativo.
+	\item Los Bienes Económicos deben ser declarados en su totalidad en cada cambio de año.
+	\item Un Ciudadano que asiste a una Sesión, debe ser Legislador de la Cámara en donde ocurre la misma.
+	\item No puede haber dos Legisladores del mismo Partido Político en distintos Bloques Políticos. 
+	\item Existe un voto de un Legislador que no es ''ausente'' si y sólo si asistió la Sesión correspondiente.
 	\item Los Legisladores que pertenecen a alguna de las Cámaras, debieron realizar una única Declaración Jurada de ese año.
-	\item La suma de los valores de los Bienes Económicos de una Declaración Jurada es igual al patrimonio de la misma. 
-	\item Un Ciudadano solo puede pertenecer a la Cámara de Diputados si es un Diputado en ese momento.
-	\item Un Ciudadano solo puede pertenecer a la Cárama de Senadores si no es ni un Diputado ni un Empleado en ese momento. 
-	\item Si un Ciudadano asiste a una Sesión, entonces ambos deben pertenecer a la misma Cámara.
+	\item Un Legislador no puede pertenecer a las dos Cámaras al mismo tiempo. 
+	\item Un Ciudadano sólo puede pertenecer a la Cámara de Diputados si es un Diputado.
+	\item Un Ciudadano que es Empleado no puede pertenecer a ninguna de las Cámaras de ese año.	
+	\item Si un Legislador asiste a una Sesión, entonces debe ser representante de la cámara en donde ocurre la misma.
 
 \end{itemize}
 
@@ -62,7 +62,8 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 	id (PK) (FK - Ciudadanos)
 	
 	\item \textbf{Empleados del PGC} \\
-	id (PK) (FK - Ciudadanos)
+	id (PK) (FK - Ciudadanos) \\
+	Año
 	
 	\item \textbf{Provincias} \\
 	id (PK) \\
@@ -175,7 +176,6 @@ Se consideró como tipo de voto, además de ''positivo'' , ''negativo'' y ''abst
 
 
 En ciertas relaciones, se decidió guardar la historia entre las entidades que participan de las mismas, a pesar de que no esté especificado claramente en el enunciado.
-Además, se almacena en la tabla de Diputados todas las veces que un Ciudadano trabajó como Diputado. 
 
 
-
+Un Legislador es un Ciudadano que puede ser tanto un Diputado como un Senador.

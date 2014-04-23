@@ -12,13 +12,23 @@ $$
 
 DELIMITER $$ 
  
-CREATE TRIGGER chequear_edad_senadores
+CREATE TRIGGER chequeo_representaciones
      BEFORE INSERT ON representaciones FOR EACH ROW
      BEGIN
         IF NEW.camara_id = 'senadores' AND 
            (year(now()) - (SELECT year(fecha_nacimiento) FROM ciudadanos WHERE id = NEW.ciudadano_id)) < 30 THEN 
      		SIGNAL SQLSTATE '45000'
                     SET MESSAGE_TEXT = 'No se puede ser senador con esa edad';
+     	END IF;
+     	
+     	IF EXISTS (SELECT id 
+				   FROM representaciones 
+				   INNER JOIN camaras ON representaciones.camara_id = camaras.id 
+                   WHERE ciudadano_id = NEW.ciudadano_id AND 
+                   año = (SELECT año FROM camaras WHERE id = NEW.camara_id) 
+                   ) THEN 
+     		SIGNAL SQLSTATE '45000'
+                    SET MESSAGE_TEXT = 'Solo puede estar en una camara para un mismo año';
      	END IF;
      	
      END;

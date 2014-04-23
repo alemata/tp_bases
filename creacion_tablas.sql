@@ -47,7 +47,8 @@ CREATE TABLE diputados (
 );
 
 CREATE TABLE empleados (
-    id INT NOT NULL,	
+    id INT NOT NULL,
+    año INT NOT NULL,	
     PRIMARY KEY (id),
     FOREIGN KEY (id) REFERENCES ciudadanos(id) 
 );

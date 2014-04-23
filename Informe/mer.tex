@@ -28,6 +28,7 @@ Las restricciones que no pueden ser modeladas en el diagrama son expresadas a co
 	\item Existe un voto de un Legislador que no es ''ausente'' si y sólo si asistió la Sesión correspondiente.
 	\item Los Legisladores que pertenecen a alguna de las Cámaras, debieron realizar una única Declaración Jurada de ese año.
 	\item Un Legislador no puede pertenecer a las dos Cámaras al mismo tiempo. 
+	\item Un Legislador no puede representar a más de una provincia en la misma Cámara. 
 	\item Un Ciudadano sólo puede pertenecer a la Cámara de Diputados si es un Diputado.
 	\item Un Ciudadano que es Empleado no puede pertenecer a ninguna de las Cámaras de ese año.	
 	\item Si un Legislador asiste a una Sesión, entonces debe ser representante de la cámara en donde ocurre la misma.
@@ -172,10 +173,10 @@ La abstracción de la realidad reduce a los cuidadanos para que sean únicamente
 Por otro lado, se asume que un Proyecto de Ley solo puede ser controlado por un Control. 
 
 
-Se consideró como tipo de voto, además de ''positivo'' , ''negativo'' y ''abstención'', los de ''ausente'' y ''deshabilitado'' por motivos de diseño.
-
-
 En ciertas relaciones, se decidió guardar la historia entre las entidades que participan de las mismas, a pesar de que no esté especificado claramente en el enunciado.
 
 
 Un Legislador es un Ciudadano que puede ser tanto un Diputado como un Senador.
+
+
+Se consideró como tipo de voto, además de ''positivo'' , ''negativo'' y ''abstención'', los de ''ausente'' y ''deshabilitado'' por motivos de diseño.

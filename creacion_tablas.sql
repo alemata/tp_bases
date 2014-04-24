@@ -94,7 +94,7 @@ CREATE TABLE bloques_politicos_ciudadanos_presidentes (
 );
 
 # Bloque politico con ciudadadnos (integrantes)
-CREATE TABLE bloques_politicos_ciudadanos_inegrantes (
+CREATE TABLE bloques_politicos_ciudadanos_integrantes (
     ciudadano_id INT NOT NULL,
     bloque_politico_id INT NOT NULL,
     año INT,

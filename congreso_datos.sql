@@ -67,7 +67,7 @@ UNLOCK TABLES;
 
 
 
-# Dump of table bloques_politicos_ciudadanos_inegrantes
+# Dump of table bloques_politicos_ciudadanos_integrantes
 # ------------------------------------------------------------
 
 

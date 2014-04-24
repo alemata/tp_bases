@@ -207,9 +207,9 @@ UNLOCK TABLES;
 LOCK TABLES `leyes` WRITE;
 /*!40000 ALTER TABLE `leyes` DISABLE KEYS */;
 
-INSERT INTO `leyes` (`id`, `año`, `sesion_id`, `proyecto_de_ley_id`)
+INSERT INTO `leyes` (`id`, `sesion_id`, `proyecto_de_ley_id`)
 VALUES
-	(1,2010,2,1);
+	(1,2,1);
 
 /*!40000 ALTER TABLE `leyes` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -309,7 +309,7 @@ LOCK TABLES `sesiones` WRITE;
 INSERT INTO `sesiones` (`id`, `fecha_inicio`, `fecha_fin`, `camara_id`, `tipo`)
 VALUES
 	(1,'2010-04-21','2010-04-21',1,'ordinaria'),
-	(2,'2010-04-22','2010-04-22',2,'ordinaria');
+	(2,'2013-04-22','2013-04-22',2,'ordinaria');
 
 /*!40000 ALTER TABLE `sesiones` ENABLE KEYS */;
 UNLOCK TABLES;

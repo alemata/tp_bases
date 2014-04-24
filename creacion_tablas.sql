@@ -169,7 +169,6 @@ CREATE TABLE proyectos_de_ley (
 # Ley
 CREATE TABLE leyes (
     id INT NOT NULL AUTO_INCREMENT,
-    año INT,
     sesion_id INT NOT NULL,
     proyecto_de_ley_id INT NOT NULL,
     PRIMARY KEY (id),

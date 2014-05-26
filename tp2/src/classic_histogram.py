@@ -1,33 +1,12 @@
 # -*- coding: utf-8 -*-
+import estimators
 import sqlite3
 import numpy as np
 import pylab
 import random
 import math
 
-class Estimator(object):
-  """Clase base de los estimadores."""
-
-  def __init__(self, db, table, column, parameter=10):
-    self.db = db
-    self.table = table
-    self.column = column
-    self.parameter = parameter
-
-    # Construye las estructuras necesita el estimador.
-    self.build_struct()
-
-  def build_struct(self):
-    raise NotImplementedError()
-
-  def estimate_equal(self, value):
-    raise NotImplementedError()
-
-  def estimate_greater(self, value):
-    raise NotImplementedError()
-
-
-class ClassicHistogram(Estimator):
+class ClassicHistogram(estimators.Estimator):
   """Histograma clasico."""
 
   def build_struct(self):
@@ -37,7 +16,8 @@ class ClassicHistogram(Estimator):
     c.execute("CREATE TABLE IF NOT EXISTS {0} (border integer, amount integer, cumulative integer)".format(table_name))
     c.execute("DELETE FROM {0}".format(table_name))
 
-    min_value, max_value, total_elem = c.execute("SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
+    min_value, max_value, total_elem = c.execute(
+        "SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
     bucket = math.floor((max_value - min_value) / self.parameter)
     print "min: " + str(min_value)
     print "max: " + str(max_value)
@@ -50,7 +30,8 @@ class ClassicHistogram(Estimator):
       if next_value == min_value:
         a = "SELECT count(*) FROM {0} where {1} = {2}".format(self.table, self.column, min_value)
       else:
-        a = "SELECT count(*) FROM {0} where {1} > {2} AND {1} <= {3}".format(self.table, self.column, prev_value, next_value )
+        a = "SELECT count(*) FROM {0} where {1} > {2} AND {1} <= {3}".format(self.table, self.column,
+                                                                             prev_value, next_value)
       amount = c.execute(a).fetchone()[0]
       print a + " => " + str(amount)
       total += amount
@@ -63,7 +44,6 @@ class ClassicHistogram(Estimator):
     conn.commit()
     conn.close()
     print "----------Finalizada la creacion de la estructura----------------"
-
 
   def estimate_equal(self, value):
     conn = sqlite3.connect(self.db)
@@ -94,7 +74,5 @@ class ClassicHistogram(Estimator):
 
     return estimator
 
-
   def estimate_greater(self, value):
     raise NotImplementedError()
-

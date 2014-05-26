@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import estimators
+from distribution_steps import DistributionSteps
+from classic_histogram import ClassicHistogram
 
 # Creo una instancia de la clase que representa al metodo
 # 'Histograma Clasico'
-aEstimator = estimators.ClassicHistogram('../test/db.sqlite3', 'table1', 'c1', parameter=20)
+aEstimator = ClassicHistogram('db.sqlite3', 'table1', 'c1', parameter=20)
 
 # Pruebo distintas instancias de estimacion
 print "Classic Histogram"

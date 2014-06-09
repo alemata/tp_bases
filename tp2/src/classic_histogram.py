@@ -16,30 +16,31 @@ class ClassicHistogram(estimators.Estimator):
     c.execute("CREATE TABLE IF NOT EXISTS {0} (border integer, amount integer, cumulative integer)".format(table_name))
     c.execute("DELETE FROM {0}".format(table_name))
 
-    min_value, max_value, total_elem = c.execute(
+    self.min_value, self.max_value, self.total_elem = c.execute(
         "SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
-    bucket = math.floor((max_value - min_value) / self.parameter)
-    print "min: " + str(min_value)
-    print "max: " + str(max_value)
+    bucket = math.floor((self.max_value - self.min_value) / self.parameter)
+    print "min: " + str(self.min_value)
+    print "max: " + str(self.max_value)
+    print "total_elem: " + str(self.total_elem)
     print "bucket size: " + str(bucket)
-    prev_value = min_value
+    prev_value = self.min_value
     next_value = prev_value
     total = 0
+    self.borders = {}
+    self.bucket_size = bucket
 
-    while total != total_elem:
-      if next_value == min_value:
-        a = "SELECT count(*) FROM {0} where {1} = {2}".format(self.table, self.column, min_value)
+    while total != self.total_elem:
+      if next_value == self.min_value:
+        a = "SELECT count(*) FROM {0} where {1} = {2}".format(self.table, self.column, self.min_value)
       else:
         a = "SELECT count(*) FROM {0} where {1} > {2} AND {1} <= {3}".format(self.table, self.column,
                                                                              prev_value, next_value)
       amount = c.execute(a).fetchone()[0]
       print a + " => " + str(amount)
       total += amount
-      c.execute("INSERT INTO {0} VALUES ({1}, {2}, {3})".format(table_name, next_value, amount, total))
+      self.borders[next_value] = {'amount': amount, 'cumulative': total}
       prev_value = next_value
       next_value += bucket
-
-    print total
 
     conn.commit()
     conn.close()
@@ -50,29 +51,51 @@ class ClassicHistogram(estimators.Estimator):
     c = conn.cursor()
     table_name = "classic_{0}".format(self.column)
 
-    # Calcular total de elementos de la tabla
-    total_elem = "select cumulative from {0} order by cumulative DESC limit 1".format(table_name)
-    total = c.execute(total_elem).fetchone()[0]
-
     # Si es un borde entonces busco el valor directamente
     borders = c.execute("select border from {0}".format(table_name)).fetchall()
-    if (value,) in borders:
-      a = "SELECT amount FROM {0} where border = {1}".format(table_name, value)
-      amount = c.execute(a).fetchone()[0]
-      estimator = (amount / float(total))
+    if value < self.min_value or value > self.max_value:
+      estimator = 0
+    elif value in self.borders:
+      amount = self.borders[value]['amount']
+      estimator = (amount / float(self.total_elem))
       print "El estimador de {0} es: {1}".format(value, estimator)
     else:
-      for i, val in enumerate(borders):
+      for i, val in enumerate(sorted(self.borders)):
         # Encontrar el bean donde se encuentra value
-        if value < val[0]:
-          border = val[0]
+        if value < val:
+          border = val
           break
-      a = "SELECT amount FROM {0} where border = {1}".format(table_name, border)
-      amount = c.execute(a).fetchone()[0]
-      estimator = (amount / float(total))
+      amount = self.borders[border]['amount']
+      estimator = (amount / float(self.total_elem))
       print "El estimador de {0} es: {1}".format(value, estimator)
 
     return estimator
 
   def estimate_greater(self, value):
-    raise NotImplementedError()
+    return 1 - self.estimate_lower(value)
+
+  def estimate_lower(self, value):
+    conn = sqlite3.connect(self.db)
+    c = conn.cursor()
+    table_name = "classic_{0}".format(self.column)
+
+    # Si es un borde entonces busco el valor directamente
+    if value < self.min_value:
+      estimator = 0
+    elif value > self.max_value:
+      estimator = 1
+    elif value in self.borders:
+      amount = self.borders[value]['cumulative']
+      estimator = (amount / float(self.total_elem))
+      print "El estimador de {0} es: {1}".format(value, estimator)
+    else:
+      for i, val in enumerate(sorted(self.borders)):
+        # Encontrar el bean donde se encuentra value
+        if value < val:
+          border = val
+          break
+      amount = self.borders[border]['cumulative']
+      estimator = (amount / float(self.total_elem))
+      print "El estimador de {0} es: {1}".format(value, estimator)
+
+    return estimator

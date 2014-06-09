@@ -52,8 +52,7 @@ class DistributionSteps(estimators.Estimator):
         if (value > self.steps[i] and value <= self.steps[i+1]) or (value == self.steps[i] and value == self.steps[i+1]):
           beans_in += 1
 
-    # TODO es asi? ver en cuantos steps cae el valor??
-    return (self.step_height * step_percentage * beans_in) / self.total_elem
+    return (self.step_height * beans_in) / self.total_elem
 
 
 

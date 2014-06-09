@@ -12,14 +12,10 @@ class DistributionSteps(estimators.Estimator):
   def build_struct(self):
     conn = sqlite3.connect(self.db)
     c = conn.cursor()
-    table_name = "steps_{colum}".format(colum=self.column)
-    c.execute(
-      "CREATE TABLE IF NOT EXISTS {table_name} (step integer, {column} integer, step_height integer)".format(
-        table_name=table_name, column=self.column))
-    c.execute("DELETE FROM {table_name}".format(table_name=table_name))
 
     self.min_value, self.max_value, self.total_elem = c.execute(
       "SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
+
     self.step_height = math.floor(self.total_elem / self.parameter)
     self.steps = []
 
@@ -39,7 +35,6 @@ class DistributionSteps(estimators.Estimator):
 
     conn.commit()
     conn.close()
-    print "----------Finalizada loa creacion de la estructura----------------"
 
   def estimate_equal(self, value):
     conn = sqlite3.connect(self.db)
@@ -90,7 +85,6 @@ class DistributionSteps(estimators.Estimator):
       prev_estimator = step_percentage * (prev_step + 1)
       estimator = (next_estimator + prev_estimator) / 2
 
-    print "El estimador de {0} es: {1}".format(value, estimator)
     return estimator
 
   def estimate_greater(self, value):

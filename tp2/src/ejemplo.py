@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from distribution_steps import DistributionSteps
 from classic_histogram import ClassicHistogram
+from real_histogram import RealHistogram
 
 # Creo una instancia de la clase que representa al metodo
 # 'Histograma Clasico'

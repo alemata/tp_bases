@@ -18,11 +18,12 @@ class DistributionSteps(estimators.Estimator):
         table_name=table_name, column=self.column))
     c.execute("DELETE FROM {table_name}".format(table_name=table_name))
 
-    min_value, max_value, total_elem = c.execute(
+    self.min_value, self.max_value, self.total_elem = c.execute(
       "SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
-    step_height = math.floor(total_elem / self.parameter)
+    self.step_height = math.floor(self.total_elem / self.parameter)
+    self.steps = []
 
-    offset = step_height - 1
+    offset = self.step_height - 1
 
     #Redondear para abajo?
     #Guardar posicion ?
@@ -32,71 +33,58 @@ class DistributionSteps(estimators.Estimator):
         column=self.column, data_table=self.table, offset=offset)
 
       attribute = c.execute(query).fetchone()[0]
-      a = "INSERT INTO {table_name} VALUES ({step}, {attribute}, {step_height})".format(table_name=table_name,
-                                                                                        step=step,
-                                                                                        attribute=attribute,
-                                                                                        step_height=step_height)
-      c.execute(a)
-      offset += step_height
+
+      self.steps.append(attribute)
+      offset += self.step_height
 
     conn.commit()
     conn.close()
-    print "----------Finalizada la creacion de la estructura----------------"
+    print "----------Finalizada loa creacion de la estructura----------------"
 
   def estimate_equal(self, value):
     conn = sqlite3.connect(self.db)
     c = conn.cursor()
-    table_name = "steps_{colum}".format(colum=self.column)
+    step_percentage = 1.0 / self.parameter
 
-    # # Calcular total de elementos de la tabla
-    # total_elem = "select cumulative from {0} order by cumulative DESC limit 1".format(table_name)
-    # total = c.execute(total_elem).fetchone()[0]
-    #
-    # # Si es un borde entonces busco el valor directamente
-    # borders = c.execute("select border from {0}".format(table_name)).fetchall()
-    # if (value,) in borders:
-    #     a = "SELECT amount FROM {0} where border = {1}".format(table_name, value)
-    #     amount = c.execute(a).fetchone()[0]
-    #     estimator = (amount / float(total))
-    #     print "El estimador de {0} es: {1}".format(value, estimator)
-    # else:
-    #     for i, val in enumerate(borders):
-    #         # Encontrar el bean donde se encuentra value
-    #         if value < val[0]:
-    #             border = val[0]
-    #             break
-    #     a = "SELECT amount FROM {0} where border = {1}".format(table_name, border)
-    #     amount = c.execute(a).fetchone()[0]
-    #     estimator = (amount / float(total))
-    #     print "El estimador de {0} es: {1}".format(value, estimator)
-    #
-    # return estimator
+    beans_in = 0
+    if value < self.min_value or value > self.max_value:
+      estimator = 0
+    else:
+      if value == self.min_value:
+        beans_in += 1
+      for i, val in enumerate(self.steps[1:]):
+        # Encontrar el bean donde se encuentra value
+        if (value > self.steps[i] and value <= self.steps[i+1]) or (value == self.steps[i] and value == self.steps[i+1]):
+          beans_in += 1
 
+    # TODO es asi? ver en cuantos steps cae el valor??
+    return (self.step_height * step_percentage * beans_in) / self.total_elem
+
+
+
+  # TODO: no se usa la altura en ningun lado?
   def estimate_lower(self, value):
     conn = sqlite3.connect(self.db)
     c = conn.cursor()
     table_name = "steps_{colum}".format(colum=self.column)
     step_percentage = 1.0 / self.parameter
 
-    borders = c.execute(
-      "select {column} from {table_name} ORDER BY {column}".format(column=self.column,
-                                                                   table_name=table_name)).fetchall()
-
-    if (value,) in borders:
-      a = "SELECT step FROM {table_name} where {column} = {border} ORDER BY step DESC LIMIT 1".format(
-        table_name=table_name, border=value, column=self.column)
-      step = c.execute(a).fetchone()[0]
+    if value < self.min_value:
+      estimator = 0
+    elif value > self.max_value:
+      estimator = 1
+    elif value in self.steps:
+      # Obtener el indice del ultimo elemento == value
+      step = len(self.steps) - self.steps[::-1].index(value) - 1
       estimator = step_percentage * (step + 1)
     else:
-      for i, val in enumerate(borders):
+      for i, val in enumerate(self.steps):
         # Encontrar el bean donde se encuentra value
-        if value < val[0]:
-          next_border = val[0]
+        if value < val:
+          next_border = val
           break
 
-      a = "SELECT step FROM {table_name} where {column} = {border} ORDER BY step LIMIT 1".format(
-        table_name=table_name, border=next_border, column=self.column)
-      next_step = c.execute(a).fetchone()[0]
+      next_step = self.steps.index(next_border)
       next_estimator = step_percentage * (next_step + 1)
       prev_step = next_step - 1
       prev_estimator = step_percentage * (prev_step + 1)
@@ -106,7 +94,5 @@ class DistributionSteps(estimators.Estimator):
     return estimator
 
   def estimate_greater(self, value):
-    conn = sqlite3.connect(self.db)
-    c = conn.cursor()
-    table_name = "steps_{colum}".format(colum=self.column)
+    return 1 - self.estimate_lower(value)
 

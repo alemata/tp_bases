@@ -45,7 +45,7 @@ class DistributionSteps(estimators.Estimator):
     if value < self.min_value or value > self.max_value:
       estimator = 0
     else:
-      if value == self.min_value:
+      if value <= self.steps[0]:
         beans_in += 1
       for i, val in enumerate(self.steps[1:]):
         # Encontrar el bean donde se encuentra value

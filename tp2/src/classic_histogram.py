@@ -79,3 +79,7 @@ class ClassicHistogram(estimators.Estimator):
       estimator = (amount / float(self.total_elem))
 
     return estimator
+
+  def print_borders(self):
+    for i, val in enumerate(sorted(self.borders)):
+      print "{val} : {value}".format(val=val, value=self.borders[val])

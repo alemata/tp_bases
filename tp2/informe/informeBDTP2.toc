@@ -1,0 +1,10 @@
+\select@language {spanish}
+\contentsline {section}{\numberline {0}Classic Histogram and Distribution Steps}{3}{section.0}
+\contentsline {subsection}{\numberline {0.1}Introducci\IeC {\'o}n}{3}{subsection.0.1}
+\contentsline {subsection}{\numberline {0.2}An\IeC {\'a}lisis}{3}{subsection.0.2}
+\contentsline {subsubsection}{\numberline {0.2.1}Generaci\IeC {\'o}n casos de prueba}{3}{subsubsection.0.2.1}
+\contentsline {subsubsection}{\numberline {0.2.2}Factores}{4}{subsubsection.0.2.2}
+\contentsline {paragraph}{Histogram}{4}{section*.2}
+\contentsline {paragraph}{Distribution Steps}{4}{section*.3}
+\contentsline {subsubsection}{\numberline {0.2.3}Distribuci\IeC {\'o}n Uniforme}{5}{subsubsection.0.2.3}
+\contentsline {subsubsection}{\numberline {0.2.4}Distribuci\IeC {\'o}n Normal}{5}{subsubsection.0.2.4}

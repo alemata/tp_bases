@@ -65,6 +65,8 @@ b = plt.plot(columns, max_errors_steps, 'bo')
 plt.margins(0.2)
 # Tweak spacing to prevent clipping of tick-labels
 plt.subplots_adjust(bottom=0.15)
+plt.xticks(columns)
 plt.legend( (a[0], b[0]), ('Classic', 'Steps') )
+plt.ylabel('Maximo error')
 plt.show()
 

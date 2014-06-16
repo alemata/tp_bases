@@ -62,5 +62,7 @@ plt.margins(0.2)
 # Tweak spacing to prevent clipping of tick-labels
 plt.yticks([0,0.1,0.2,0.3, 0.4])
 plt.subplots_adjust(bottom=0.15)
+plt.xticks(columns)
 plt.legend( (a[0], b[0]), ('Classic', 'Steps') )
+plt.ylabel('Maximo error')
 plt.show()

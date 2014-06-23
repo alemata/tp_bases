@@ -92,6 +92,8 @@ b = plt.plot(columns, error_avgs, 'bo')
 plt.margins(0.2)
 # Tweak spacing to prevent clipping of tick-labels
 plt.subplots_adjust(bottom=0.15)
+plt.legend( (a[0], b[0]), ('Uniforme', 'Normal') )
+plt.yticks([0,0.1, 0.2, 0.3, 0.4, 0.5, 0.6])
 # plt.legend( (a[0], b[0]), ('Uniforme', 'Normal') )
 plt.ylabel('Maximo error')
 plt.xlabel('Limite de variacion')
@@ -100,4 +102,5 @@ plt.show()
 # En este caso solo variamos el parametro de la varianza 
 # (ya que al ser una mejora de classic distribution, la variacion d parametro steps se comporta 
 # de igual manera que el classic distribution, haria falta grafico?? No creo)
-# 
+# Aclarar que aca usamos el maximo error porque el promedio no daba mucha informacion
+# (suponemos que no resaltaba tanto el error que habia) en algunos valores (se lo comia el promedio)

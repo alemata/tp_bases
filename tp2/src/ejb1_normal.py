@@ -8,20 +8,20 @@ import sqlite3
 import numpy as np
 
 # Genero los datos con distribucion uniforme
-conn = sqlite3.connect('db.datos_ejb1')
-c = conn.cursor()
+# conn = sqlite3.connect('db.datos_ejb1')
+# c = conn.cursor()
 
-c.execute("CREATE TABLE IF NOT EXISTS normal (d1 integer,d2 integer,d3 integer,d4 integer,d5 integer,d6 integer,d7 integer,d8 integer,d9 integer,d10 integer)")
-c.execute("DELETE from normal")
+# c.execute("CREATE TABLE IF NOT EXISTS normal (d1 integer,d2 integer,d3 integer,d4 integer,d5 integer,d6 integer,d7 integer,d8 integer,d9 integer,d10 integer)")
+# c.execute("DELETE from normal")
 
-for x in range(0, 3000):
-    values = []
-    for x in range(0, 10):
-      values.append(math.floor(np.random.normal(100, 20, 1)[0]))
+# for x in range(0, 3000):
+    # values = []
+    # for x in range(0, 10):
+      # values.append(math.floor(np.random.normal(100, 20, 1)[0]))
 
-    c.execute("INSERT INTO normal VALUES ({values})".format(values=",".join(map(str, values))))
+    # c.execute("INSERT INTO normal VALUES ({values})".format(values=",".join(map(str, values))))
 
-conn.commit()
+# conn.commit()
 
 # ------------------- PRUEBAS ----------------------
 db_name = 'db.datos_ejb1'
@@ -68,5 +68,6 @@ plt.subplots_adjust(bottom=0.15)
 plt.xticks(columns)
 plt.legend( (a[0], b[0]), ('Classic', 'Steps') )
 plt.ylabel('Maximo error')
+plt.xlabel('Numero de columna')
 plt.show()
 

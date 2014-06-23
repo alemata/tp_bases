@@ -8,7 +8,7 @@ import sqlite3
 import numpy as np
 
 # Genero los datos con distribucion uniforme
-db_name = 'db.variacion_classic'
+db_name = 'db.normal_uniforme'
 # conn = sqlite3.connect(db_name)
 # c = conn.cursor()
 
@@ -31,7 +31,7 @@ db_name = 'db.variacion_classic'
 # ------------------- UNIFORME ----------------------
 table = 'uniforme'
 columns = []
-histograms_diff = []
+error_avgs = []
 for n in range(1, 11):
   # Uniforme
   column = 'd1'
@@ -47,21 +47,19 @@ for n in range(1, 11):
   avg_classic_diff = sum(errors) / len(errors)
 
   columns.append(n)
-  #Guardo la diferencia entre las medias de las diferencias absolutas.
-  histograms_diff.append(avg_classic_diff)
+  error_avgs.append(avg_classic_diff)
 
 
 import matplotlib.pyplot as plt
 
 
-a = plt.plot(columns, histograms_diff, 'ro')
+a = plt.plot(columns, error_avgs, 'ro')
 
 
 # ------------------- NORMAL ----------------------
-db_name = 'db.variacion_classic'
 table = 'normal'
 columns = []
-histograms_diff = []
+error_avgs = []
 for n in range(1, 11):
   # Uniforme
   column = 'd1'
@@ -77,14 +75,13 @@ for n in range(1, 11):
   avg_classic_diff = sum(errors) / len(errors)
 
   columns.append(n)
-  #Guardo la diferencia entre las medias de las diferencias absolutas.
-  histograms_diff.append(avg_classic_diff)
+  error_avgs.append(avg_classic_diff)
 
 
 import matplotlib.pyplot as plt
 
 
-b = plt.plot(columns, histograms_diff, 'bo')
+b = plt.plot(columns, error_avgs, 'bo')
 # Pad margins so that markers don't get clipped by the axes
 plt.margins(0.2)
 # Tweak spacing to prevent clipping of tick-labels

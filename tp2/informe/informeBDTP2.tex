@@ -27,7 +27,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
-\usepackage[utf8]{inputenc} 
+\usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{color}
@@ -62,7 +62,7 @@
 \section{Classic Histogram and Distribution Steps}
 \subsection{Introducción}
 
-Tanto Classic Histogram como Distrbution Steps son estimadores de tuplas que satisfacen una condicion. Se puede realizar una búsqueda por aquellas tuplas que cumplan una condición de igualdad, por menor o menor igual y por mayor o mayor igual a cierto valor. Los estimadores son utilizados en las bases de datos en el proceso de seleccionar un plan de ejecucion óptimo 
+Tanto Classic Histogram como Distrbution Steps son estimadores de tuplas que satisfacen una condicion. Se puede realizar una búsqueda por aquellas tuplas que cumplan una condición de igualdad, por menor o menor igual y por mayor o mayor igual a cierto valor. Los estimadores son utilizados en las bases de datos en el proceso de seleccionar un plan de ejecucion óptimo
 al momento de realizar una consulta.
 
 Son varios los factores que se involucran en el cálculo de estimadores. Alguno de ellos son la precisión, la cantidad de información que contenga la base de datos,
@@ -75,27 +75,68 @@ Las variables en cuestión son:
 \item Una variable denominada PARAM que representan la cantidad en la que se va a agrupar los datos de la base, es decir, la cantidad de steps.
 \end{itemize}
 
-Los steps denotan la cantidad en la que se dividen los conjuntos de datos. Por lo tanto, es claro que al aumentar el valor de steps se aumenta la presición y se disminuye el error en la estimación. 
+Los steps denotan la cantidad en la que se dividen los conjuntos de datos. Por lo tanto, es claro que al aumentar el valor de steps se aumenta la presición y se disminuye el error en la estimación.
 
-El beneficio que aporta el estimador Distrbution Steps podrá ser observado al compararlo con Classic Histogram y evaluando diferentes factores. Principalmente se tiene en cuenta el costo temporal y espacial de la construcción de las estructuras requeridas por el estimador, el costo temporal de la consulta y el error que comete en la misma. 
+El beneficio que aporta el estimador Distrbution Steps podrá ser observado al compararlo con Classic Histogram y evaluando diferentes factores. Principalmente se tiene en cuenta el costo temporal y espacial de la construcción de las estructuras requeridas por el estimador, el costo temporal de la consulta y el error que comete en la misma.
 
 \subsection{Análisis}
 
 Para entender el funcionamiento de ambos estimadores, se creó el siguiente caso simple de prueba.
 
-[[ EXPLICAR EL EJEMPLO CON PALABRAS Y QUE REPRESENTA ]]
+\begin{table}[htdp]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+       Número  & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9 & 10 & 11 & 12 \\ \hline
+       Cantidad & 1 & 1 & 0 & 1 & 12 & 1 & 0 & 2 & 0 & 1 & 0 & 0 & 1 \\ \hline
+    \end{tabular}
+  \end{center}
+  \caption{New Table}
+  \label{tab:newTable}
+\end{table}
 
-![Imagen Distribution Steps](url)
 
-![Imagen Classic Histogram](url)
+Esperamos que `Distrution steps` tenga mejor performance pues, como bien dice el \textit{paper},
+viene a solucionar el problema que tenemos con el `Classic Histogram` manejando la altura
+de los \textbf{bins}.
 
-Basándose en el ejemplo planteado, se observa que el comportamiento de los distintos estimadores depende de la distribición de los datos. Por ejemplo, cuando los datos están agrupados, Distribucion Steps brinda un menor error en la estimación pero,
-cuando los datos estan dispersos el error es del estimador es mucho mayor que el que presenta Classic Histogram.
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./imagenes/ejb1_ejemplo_classic_y_real.png}
+  \caption{Comparacion Classic vs. Real}
+\end{figure}
+
+
+Tomemos como ejemplo la \textit{selectividad de 5}.
+En la \textit{figura 1} vemos que la selectividad es de $0.65$ pues queda agrupado junto con \textit{4}
+que es un valor que aparece muchas veces. Sin embargo, los datos reales nos indican que deberia
+ser \textit{0.05} ya que tiene pocas apariciones.
+
+Como vemos este es un caso \textbf{no favorable} para \textbf{Classic Histogram} y muestra la ventaja
+de controlar la altura de los \textit{bins}.
+
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./imagenes/ejb1_ejemplo_steps.png}
+  \caption{Distribution Steps}
+\end{figure}
+
+
+Para el mismo ejemplo, examinamos la \textit{selectividad de 5} nuevamente con el nuevo histograma.
+Podemos observar que esta vez, la selectividad es de $0.25$. Si bien tambien se desvia del valor real ($0.05$),
+la diferencia del error es significativa comparada con \textbf{Classic Histogram}.
+
+
+Basándose en el ejemplo planteado, se observa que el comportamiento de los distintos estimadores
+depende de la distribición de los datos.
+Por ejemplo, cuando los datos están agrupados, \textbf{Distribucion Steps} brinda un menor
+error en la estimación pero, cuando los datos estan dispersos el error es del estimador es
+mucho mayor que el que presenta \textbf{Classic Histogram}.
 
 A continuación se experimentará con datos que siguen una distribución uniforme o normal.
 
 \subsubsection{Generación casos de prueba}
-Los casos de prueba que se van a utilizar para el análisis del comportamiento de ambos estimadores se generarán de manera aleatoria. Se define una función que genera números aleatorios que siguen una distribucion normal o uniforme. 
+Los casos de prueba que se van a utilizar para el análisis del comportamiento de ambos estimadores se generarán de manera aleatoria. Se define una función que genera números aleatorios que siguen una distribucion normal o uniforme.
 
 Los dos estimadores serán comparados utilizando la misma cantidad de bins, ya que en ambos representan lo mismo. Uno va a tener bins más altos y el otro, más anchos. Esto se debe a la particularidad de como se construyen los histogramas.
 
@@ -115,9 +156,9 @@ O(b * n + n )
 O(b * n)
 \end{equation}
 
-Siendo n la cantidad total de tuplas existentes en la base de datos. Por el otro lado, b representa el valor pasado en PARAM. Como se recorre toda la tabla por cada dato que se requiere para la tabla del estimador, se deberá considerar un costo de $b * n$. Por otro lado, también se requiere almacenar en la estructura del estimador, el máximo, mínimo y la cantidad total de tuplas, lo cual es una búsqueda que realiza el motor de bases de datos en tiempo lineal. 
+Siendo n la cantidad total de tuplas existentes en la base de datos. Por el otro lado, b representa el valor pasado en PARAM. Como se recorre toda la tabla por cada dato que se requiere para la tabla del estimador, se deberá considerar un costo de $b * n$. Por otro lado, también se requiere almacenar en la estructura del estimador, el máximo, mínimo y la cantidad total de tuplas, lo cual es una búsqueda que realiza el motor de bases de datos en tiempo lineal.
 
-\item Costo espacial del estimador: 
+\item Costo espacial del estimador:
 \begin{equation}
 O(2 * b + 3 ) \\
 \end{equation}
@@ -126,11 +167,11 @@ O(2 * b)
 \end{equation}
 Se utiliza un diccionario que presenta un costo espacial del valor pasado en PARAM por dos, ya que por cada bin se almacen dos valores más (la cantidad y el acumulado hasta ese valor). Por otro lado, se requere almacenar el máximo, mínimo y la cantidad total.
 
-\item Costo de consulta: 
+\item Costo de consulta:
 \begin{equation}
 O(1)
 \end{equation}
-Lo único se se requere es el acceso al diccionario, lo cual presenta un costo constante. 
+Lo único se se requere es el acceso al diccionario, lo cual presenta un costo constante.
 
 \end{itemize}
 \paragraph{Distribution Steps}
@@ -138,14 +179,14 @@ Lo único se se requere es el acceso al diccionario, lo cual presenta un costo c
 
 \begin{itemize}
 
-\item Costo de creación del estimador: 
+\item Costo de creación del estimador:
 \begin{equation}
 O(n*log(n) + n + n)
 \end{equation}
 \begin{equation}
 O(n*log(n))
 \end{equation}
-El algoritmo consiste en el ordenamiento de las tuplas de acuerdo a la columna pasada por parámetro. El ordanamiento lo realiza el motor de la base de datos en costo $O(n*log(n))$. Por otro lado se deberá calcular el máximo, mínimo y total de tuplas existentes en la base. 
+El algoritmo consiste en el ordenamiento de las tuplas de acuerdo a la columna pasada por parámetro. El ordanamiento lo realiza el motor de la base de datos en costo $O(n*log(n))$. Por otro lado se deberá calcular el máximo, mínimo y total de tuplas existentes en la base.
 
 \item Costo espacial del estimador:
 \begin{equation}
@@ -154,13 +195,13 @@ O(b + 1) \\
 \begin{equation}
 O(b)
 \end{equation}
-Se requiere unicamente almacenar un array con las tuplas que se encuentran en las distintas posiciones de los steps. Además, se deberá almacenar la cantidad de tuplas totales existentes en la tabla pasada por parámetro. 
+Se requiere unicamente almacenar un array con las tuplas que se encuentran en las distintas posiciones de los steps. Además, se deberá almacenar la cantidad de tuplas totales existentes en la tabla pasada por parámetro.
 
 \item Costo de consulta:
 \begin{equation}
 O(n)
 \end{equation}
-Tanto para una búsqueda por igualdad o por menor, se deberá recorrer el array buscando el valor de tupla deseado. 
+Tanto para una búsqueda por igualdad o por menor, se deberá recorrer el array buscando el valor de tupla deseado.
 
 \end{itemize}
 
@@ -175,8 +216,8 @@ Partimos con una base de datos cuya información cumple con una distribución un
 \end{figure}
 
 
-Con respecto al error de factor en la estimacion, ambos estimadores no difieren significativamente en sus resultados. Dado que 
-al tener los datos distribuidos de forma uniforme, la probabilidad de cada tupla es $1/n$, siendo $n$ la cantidad total de tuplas de la tabla. 
+Con respecto al error de factor en la estimacion, ambos estimadores no difieren significativamente en sus resultados. Dado que
+al tener los datos distribuidos de forma uniforme, la probabilidad de cada tupla es $1/n$, siendo $n$ la cantidad total de tuplas de la tabla.
 
 ( Para rango |a-b|/(max - min))
 

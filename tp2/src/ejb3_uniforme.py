@@ -7,24 +7,9 @@ from estimator_group import EstimatorGroup
 import sqlite3
 import numpy as np
 
-# Genero los datos con distribucion uniforme
-# conn = sqlite3.connect('db.datos_ejb1')
-# c = conn.cursor()
-
-# c.execute("CREATE TABLE IF NOT EXISTS uniforme (d1 integer,d2 integer,d3 integer,d4 integer,d5 integer,d6 integer,d7 integer,d8 integer,d9 integer,d10 integer)")
-# c.execute("DELETE from  uniforme")
-
-# for x in range(0, 3000):
-    # values = []
-    # for x in range(0, 10):
-      # values.append(np.random.random_integers(100))
-
-    # c.execute("INSERT INTO uniforme VALUES ({values})".format(values=",".join(map(str, values))))
-
-# conn.commit()
+db_name = 'db.datos_normal_uniforme'
 
 # ------------------- PRUEBAS ----------------------
-db_name = 'db.datos_ejb1'
 table = 'uniforme'
 columns = []
 max_errors_classic = []

@@ -8,24 +8,8 @@ import math
 import sqlite3
 import numpy as np
 
-# Genero los datos con distribucion uniforme
-# conn = sqlite3.connect('db.datos_ejb1')
-# c = conn.cursor()
 
-# c.execute("CREATE TABLE IF NOT EXISTS normal (d1 integer,d2 integer,d3 integer,d4 integer,d5 integer,d6 integer,d7 integer,d8 integer,d9 integer,d10 integer)")
-# c.execute("DELETE from normal")
-
-# for x in range(0, 3000):
-    # values = []
-    # for x in range(0, 10):
-      # values.append(math.floor(np.random.normal(100, 20, 1)[0]))
-
-    # c.execute("INSERT INTO normal VALUES ({values})".format(values=",".join(map(str, values))))
-
-# conn.commit()
-
-# ------------------- PRUEBAS ----------------------
-db_name = 'db.datos_ejb1'
+db_name = 'db.datos_normal_uniforme'
 table = 'normal'
 columns = []
 max_errors_classic = []

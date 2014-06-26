@@ -7,47 +7,32 @@ import math
 import sqlite3
 import numpy as np
 
-# Genero los datos con distribucion uniforme
-db_name = 'db.normal_uniforme'
-# conn = sqlite3.connect(db_name)
-# c = conn.cursor()
-
-# c.execute("CREATE TABLE IF NOT EXISTS uniforme (d1 integer)")
-# c.execute("DELETE from  uniforme")
-
-# c.execute("CREATE TABLE IF NOT EXISTS normal (d1 integer)")
-# c.execute("DELETE from  normal")
-
-
-# for x in range(0, 1000):
-    # uniform_value = np.random.random_integers(100)
-    # normal_value = math.floor(np.random.normal(100, 5, 1)[0])
-
-    # c.execute("INSERT INTO uniforme VALUES ({value})".format(value=uniform_value))
-    # c.execute("INSERT INTO normal VALUES ({value})".format(value=normal_value))
-
-# conn.commit()
+db_name = 'db.datos_normal_uniforme'
 
 # ------------------- UNIFORME ----------------------
 table = 'uniforme'
 columns = []
+error_avgs_col = []
 error_avgs = []
-for n in range(1, 11):
-  # Uniforme
-  column = 'd1'
-  cEstimator = ClassicHistogram(db_name, table, column, parameter=n)
-  rEstimator = RealHistogram(db_name, table, column, parameter=n)
+for par in range(1, 11):
+  for n in range(1, 11):
+    # Uniforme
+    column = 'd' + str(n)
+    cEstimator = ClassicHistogram(db_name, table, column, parameter=par)
+    rEstimator = RealHistogram(db_name, table, column, parameter=par)
+    error_avgs_col = []
 
-  errors = []
-  for x in range(rEstimator.min_value, rEstimator.max_value + 1):
-    ce = cEstimator.estimate_equal(x)
-    re = rEstimator.estimate_equal(x)
-    errors.append(abs(ce - re))
+    errors = []
+    for x in range(rEstimator.min_value, rEstimator.max_value + 1):
+      ce = cEstimator.estimate_equal(x)
+      re = rEstimator.estimate_equal(x)
+      errors.append(abs(ce - re))
 
-  avg_classic_diff = sum(errors) / len(errors)
+    avg_classic_diff = sum(errors) / len(errors)
+    error_avgs_col.append(avg_classic_diff)
 
-  columns.append(n)
-  error_avgs.append(avg_classic_diff)
+  columns.append(par)
+  error_avgs.append(sum(error_avgs_col) / float(len(error_avgs_col)))
 
 
 import matplotlib.pyplot as plt
@@ -59,23 +44,26 @@ a = plt.plot(columns, error_avgs, 'ro')
 # ------------------- NORMAL ----------------------
 table = 'normal'
 columns = []
+error_avgs_col = []
 error_avgs = []
-for n in range(1, 11):
-  # Uniforme
-  column = 'd1'
-  cEstimator = ClassicHistogram(db_name, table, column, parameter=n)
-  rEstimator = RealHistogram(db_name, table, column, parameter=n)
+for par in range(1, 11):
+  for n in range(1, 11):
+    column = 'd' + str(n)
+    cEstimator = ClassicHistogram(db_name, table, column, parameter=par)
+    rEstimator = RealHistogram(db_name, table, column, parameter=par)
+    error_avgs_col = []
 
-  errors = []
-  for x in range(rEstimator.min_value, rEstimator.max_value + 1):
-    ce = cEstimator.estimate_equal(x)
-    re = rEstimator.estimate_equal(x)
-    errors.append(abs(ce - re))
+    errors = []
+    for x in range(rEstimator.min_value, rEstimator.max_value + 1):
+      ce = cEstimator.estimate_equal(x)
+      re = rEstimator.estimate_equal(x)
+      errors.append(abs(ce - re))
 
-  avg_classic_diff = sum(errors) / len(errors)
+    avg_classic_diff = sum(errors) / len(errors)
+    error_avgs_col.append(avg_classic_diff)
 
-  columns.append(n)
-  error_avgs.append(avg_classic_diff)
+  columns.append(par)
+  error_avgs.append(sum(error_avgs_col) / float(len(error_avgs_col)))
 
 
 import matplotlib.pyplot as plt
@@ -88,10 +76,10 @@ plt.margins(0.2)
 plt.subplots_adjust(bottom=0.15)
 plt.legend( (a[0], b[0]), ('Uniforme', 'Normal') )
 plt.ylabel('Error promedio')
-plt.xlabel('Numero de steps')
+plt.xlabel('Cantidad de bins')
 plt.show()
 
 
-# Como era de esperar mejora a medida que agrandamos el parameter. Esto es porque separa mejor los caso y entonces se tiene 
+# Como era de esperar mejora a medida que agrandamos el parameter. Esto es porque separa mejor los caso y entonces se tiene
 # una estimacion mas precisa. El idea que seria que en cada bucket este 1 solo valor => la estimacion seria perfecta... pero
 # eso tiene un costo espacial y computacional grande (igual a no hacer el histograma y usar la tabla directamente)

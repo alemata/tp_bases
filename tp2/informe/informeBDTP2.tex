@@ -144,7 +144,7 @@ Los dos estimadores serán comparados utilizando la misma cantidad de bins, ya q
 
 Debido a la estructura que se utiliza para construir los estimadores y el algoritmo de construcción de los mismos, se podrá afirmar que:
 
-\paragraph{Histogram}
+\paragraph{Classic Histogram}
 % Usamos un diccionario
 \begin{itemize}
 
@@ -222,11 +222,14 @@ al tener los datos distribuidos de forma uniforme, la probabilidad de cada tupla
 ( Para rango |a-b|/(max - min))
 
 
-Debido a que se los compara con igual cantidad de steps, entonces la altura, en el caso de Classic Histogram, y el ancho, en el Distribution Steps, son similares.
+Debido a que se los compara con igual cantidad de steps, entonces la altura, en el caso de
+\textbf{Classic Histogram}, y el ancho, en el \textbf{Distribution Steps}, son similares.
 
-Sin embargo, teniendo en cuenta el factor de costos de creación, el estimador "Distribution Steps" es más costoso. El motivo principal es debido al ordenamiento de los datos antes de construir el histograma requerido.
+Sin embargo, teniendo en cuenta el factor de costos de creación, el estimador \textbf{Distribution Steps} es más costoso.
+El motivo principal es debido al ordenamiento de los datos antes de construir el histograma requerido.
 
-En conclusión, para datos que cumplen una distribución uniforme, sugerimos implementar Classic Histogram, debido al menor costo de construcción del histograma.
+En conclusión, para datos que cumplen una distribución uniforme, sugerimos implementar
+\textbf{Classic Histogram}, debido al menor costo de construcción del histograma.
 
 
 \subsubsection{Distribución Normal}

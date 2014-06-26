@@ -22,7 +22,7 @@ columns = []
 error_avgs = []
 for n in frange(0.001, 0.1, 0.003):
   column = 'd1'
-  cEstimator = EstimatorGroup(db_name, table, column, {'size': 4, 'variance': n})
+  cEstimator = EstimatorGroup(db_name, table, column, {'size': 4, 'threshold': n})
   rEstimator = RealHistogram(db_name, table, column, parameter=n)
 
   errors = []
@@ -49,7 +49,7 @@ columns = []
 error_avgs = []
 for n in frange(0.001, 0.1, 0.003):
   column = 'd1'
-  cEstimator = EstimatorGroup(db_name, table, column, {'size': 4, 'variance': n})
+  cEstimator = EstimatorGroup(db_name, table, column, {'size': 4, 'threshold': n})
   rEstimator = RealHistogram(db_name, table, column, parameter=n)
 
   errors = []
@@ -80,8 +80,8 @@ plt.ylabel('Maximo error')
 plt.xlabel('Limite de variacion')
 plt.show()
 
-# En este caso solo variamos el parametro de la varianza 
-# (ya que al ser una mejora de classic distribution, la variacion d parametro steps se comporta 
+# En este caso solo variamos el parametro de la varianza
+# (ya que al ser una mejora de classic distribution, la variacion d parametro steps se comporta
 # de igual manera que el classic distribution, haria falta grafico?? No creo)
 # Aclarar que aca usamos el maximo error porque el promedio no daba mucha informacion
 # (suponemos que no resaltaba tanto el error que habia) en algunos valores (se lo comia el promedio)

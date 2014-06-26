@@ -43,12 +43,12 @@ class EstimatorGroup(estimators.Estimator):
         # print real_estimators_dict_tmp
         # print np.var(real_estimators_dict_tmp.values())
         # print "------------------"
-        variance = np.var(real_estimators_dict_tmp.values())
+        threshold = np.var(real_estimators_dict_tmp.values())
 
         max_val = max(real_estimators_dict_tmp.values())
         min_val = min(real_estimators_dict_tmp.values())
         diff =  abs(max_val - min_val)
-        if diff >= self.parameter['variance']:
+        if diff >= self.parameter['threshold']:
           # Si la maxima diferencia de la estimacion es mayor a
           # la pasada por parametro guardo los valores exactos
           self.real_values.update(real_values_count_tmp)

@@ -21,7 +21,7 @@ for n in range(1, 11):
   cEstimator = ClassicHistogram(db_name, table, column, param)
   rEstimator = RealHistogram(db_name, table, column, param)
   sEstimator = DistributionSteps(db_name, table, column, param)
-  gEstimator = EstimatorGroup(db_name, table, column, {'size': param, 'variance': 0.018})
+  gEstimator = EstimatorGroup(db_name, table, column, {'size': param, 'threshold': 0.018})
 
   points = []
   classic_errors = []
@@ -59,4 +59,3 @@ plt.legend( (a[0], b[0], c[0]), ('Classic', 'Steps', 'Group') )
 plt.ylabel('Maximo error')
 plt.xlabel('Numero de columna')
 plt.show()
-

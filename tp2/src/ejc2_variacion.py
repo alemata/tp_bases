@@ -16,7 +16,7 @@ table = 'table1'
 params = []
 error_avgs_col = []
 error_avgs = []
-for col in range(0, 1):
+for col in range(0, 10):
   error_avgs_col = []
   params = []
   column = 'c' + str(col)

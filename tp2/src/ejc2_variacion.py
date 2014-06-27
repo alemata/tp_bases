@@ -16,16 +16,19 @@ table = 'table1'
 params = []
 error_avgs_col = []
 error_avgs = []
+cols = []
 for col in range(0, 10):
   error_avgs_col = []
   params = []
   column = 'c' + str(col)
+  cols.append(col)
+  # print "arranque creacion---------"
+  # print column
   rEstimator = RealHistogram(db_name, table, column, parameter=1)
-  for par in range(2, 11, 2):
-    print "arranque creacion---------"
+  # print "termine creacion---------"
+
+  for par in range(2, 30, 2):
     sEstimator = DistributionSteps(db_name, table, column, parameter=par)
-    print "termine creacion---------"
-    print par
 
     errors = []
     for x in range(rEstimator.min_value, rEstimator.max_value + 1):
@@ -39,6 +42,7 @@ for col in range(0, 10):
 
   a = plt.plot(params, error_avgs_col, colors[col])
 
+plt.legend(cols)
 plt.margins(0.2)
 plt.subplots_adjust(bottom=0.15)
 plt.ylabel('Error promedio')

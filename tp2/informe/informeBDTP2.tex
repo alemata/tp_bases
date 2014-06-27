@@ -157,9 +157,6 @@ estimadores se generarán de manera aleatoria. Se define una función que genera
 aleatorios que siguen una distribucion normal o uniforme.
 
 
-// Los dos estimadores serán comparados utilizando la misma cantidad de bins, ya que en ambos
-// representan lo mismo. Uno va a tener bins más altos y el otro, más anchos.
-// Esto se debe a la particularidad de como se construyen los histogramas.
 
 \subsubsection{Factores}
 
@@ -178,7 +175,7 @@ O(b * n + n )
 O(b * n)
 \end{equation}
 
-Siendo n la cantidad total de tuplas existentes en la base de datos.
+Siendo \textit{n} la cantidad total de tuplas existentes en la base de datos.
 Por el otro lado, \textit{b} representa el valor pasado en \textbf{PARAM}.
 Como se recorre toda la tabla por cada dato que se requiere para la tabla del estimador,
 se deberá considerar un costo de $b * n$. Por otro lado, también se requiere almacenar en
@@ -238,6 +235,109 @@ Tanto para una búsqueda por igualdad o por menor, se deberá recorrer el array 
 el valor de tupla deseado.
 
 \end{itemize}
+
+\subsection{Ejercicio 2 - Cambiar nombre}
+
+\subsubsection{Classic Histogram}
+
+Como explicamos anteriormente, el \textbf{param} indica la cantidad de bins que generamos.
+
+Suponemos que cuando \textbf{param} toma un valor mas grande, disminuye el error en la estimación,
+pues agrupa menor cantidad de valores por \textit{bin}.
+
+Ademas, suponemos que la distribucion de los datos no influencia en el resultado. Si bien
+el histograma puede tener menor error con una determinada distribucion, la cantidad de
+\textit{bins} suponemos que produciria una reduccion de error mas significativa.
+
+Veamos el siguiente gráfico que muestra el error promedio que comete el histograma variando
+la cantidad de \textit{bins}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_classic_parameter_variation.png}
+  \caption{Classic Histogram - Variacion del parametro}
+\end{figure}
+
+
+Como era de esperar, mejora a medida que agrandamos el \textbf{param}.
+Esto es porque separa mejor los casos y entonces se tiene una estimacion mas precisa.
+Sin embargo, por cada incremento de \textit{bin}, el costo se incrementa pues se requiere
+mas espacio para almacenar las estadisticas.
+
+Si hacemos que $param \rightarrow n$ (siendo n la cantidad de valores distintos), nos
+daria la estimación perfecta, pero con un costo altisimo tanto espacial como computacional.
+
+
+
+\subsubsection{Distribution Steps}
+
+Para este histograma, partimos con una suposicion similar, pues la diferencia es que mientras
+mas \textit{steps} se crean, mas chicos son los \textit{bins} que agrupan valores.
+
+
+Veamos el siguiente gráfico que muestra el error promedio que comete el histograma variando
+la cantidad de \textit{bins}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_step_parameter_variation.png}
+  \caption{Distribution Steps - Variacion del parametro}
+\end{figure}
+
+Nuevamente nuestra hipotesis se confirma. El costo tambien se ve incrementado por
+la cantidad de \textit{steps}.
+
+
+
+
+
+\subsubsection{Group}
+
+para este tenemos bins y la variacion (error)
+
+mejora de clasic histogram
+
+A diferencia de los histogramas anteriores, este cuenta con dos parametros.
+
+\begin{itemize}
+  \item size - cantidad de bins
+  \item threshold - maximo error permitido
+\end{itemize}
+
+Como este Histograma es una modificacion de \textit{Classic Histogram}, obtendriamos la misma
+conclusion al variar el \textbf{size}, el equivalente de \textbf{params}.
+
+Por lo tanto, nos queda ver como evoluciona la estimacion cuando modificamos el
+\textbf{threshold}, es decir aumentando y disminuyendo el maximo error permitido.
+
+Esperamos ver, que a medida que se achica el \textbf{threshold}, la selectividad es mas precisa.
+
+
+Veamos el siguiente gráfico que muestra el \textit{maximo error} que comete el histograma
+variando el \textbf{threshold}.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_group_parameter_variation.png}
+  \caption{Distribution Group - Variacion del threshold}
+\end{figure}
+
+
+En el caso de la distribucion uniforme, para sorpresa nuestra, el maximo error llega a un
+techo y no sigue creciendo. No lo supusimos desde el principio, pero cobra sentido si
+recordamos que los datos provienen de una distribucion uniforme, donde la varianza no es
+grande. Por eso solo podemos apreciar las grandes mejoras, con un \textbf{threshold} muy pequeño.
+
+Para la distribucion normal, el grafico si muestra como mejora la presicion o como se pierde
+para los distintos valores del \textbf{threshold}.
+
+
+
+
+
+
+
+
 
 \subsubsection{Distribución Uniforme}
 

@@ -69,7 +69,7 @@ for par in range(1, 11):
 import matplotlib.pyplot as plt
 
 
-b = plt.plot(columns, error_avgs, 'bo')
+b = plt.plot(columns, error_avgs, 'b^')
 # Pad margins so that markers don't get clipped by the axes
 plt.margins(0.2)
 # Tweak spacing to prevent clipping of tick-labels

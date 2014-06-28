@@ -21,7 +21,7 @@ for n in range(1, 11):
   cEstimator = ClassicHistogram(db_name, table, column, param)
   rEstimator = RealHistogram(db_name, table, column, param)
   sEstimator = DistributionSteps(db_name, table, column, param)
-  gEstimator = EstimatorGroup(db_name, table, column, {'size': param, 'threshold': 0.01})
+  gEstimator = EstimatorGroup(db_name, table, column, {'size': param, 'threshold': 0.2})
 
   points = []
   classic_errors = []

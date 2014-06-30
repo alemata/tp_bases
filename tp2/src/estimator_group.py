@@ -40,11 +40,6 @@ class EstimatorGroup(estimators.Estimator):
           real_values_count_tmp[x] = a_value
           real_estimators_dict_tmp[x] = a_value / float(self.total_elem)
 
-        # print real_estimators_dict_tmp
-        # print np.var(real_estimators_dict_tmp.values())
-        # print "------------------"
-        threshold = np.var(real_estimators_dict_tmp.values())
-
         max_val = max(real_estimators_dict_tmp.values())
         min_val = min(real_estimators_dict_tmp.values())
         diff =  abs(max_val - min_val)
@@ -67,8 +62,6 @@ class EstimatorGroup(estimators.Estimator):
 
     conn.commit()
     conn.close()
-    # print self.print_borders()
-    # print self.real_values
 
   def estimate_equal(self, value):
     if value < self.min_value or value > self.max_value:

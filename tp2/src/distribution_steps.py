@@ -23,9 +23,6 @@ class DistributionSteps(estimators.Estimator):
 
     offset = self.step_height - 1
 
-    #Redondear para abajo?
-    #Guardar posicion ?
-
     for step in range(self.parameter):
       query = "SELECT {column} FROM {data_table} ORDER BY {column} LIMIT 1 OFFSET {offset} ".format(
         column=self.column, data_table=self.table, offset=offset)
@@ -57,8 +54,6 @@ class DistributionSteps(estimators.Estimator):
     return (self.step_height * beans_in) / self.total_elem
 
 
-
-  # TODO: no se usa la altura en ningun lado?
   def estimate_lower(self, value):
     conn = sqlite3.connect(self.db)
     c = conn.cursor()

@@ -76,10 +76,3 @@ plt.legend( (a[0], b[0]), ('Uniforme', 'Normal') )
 plt.ylabel('Error promedio')
 plt.xlabel('Cantidad de steps')
 plt.show()
-
-# Aca por un error el en codigo al principio daban igual con todos los parameters.. (podriamos chamuyar algo en el informe
-# con esto)
-# Como era de esperar mejora a medida que agrandamos el parameter. Esto es porque separa mejor los caso y entonces se tiene 
-# una estimacion mas precisa. El idea que seria que en cada bucket este 1 solo valor => la estimacion seria perfecta... pero
-# eso tiene un costo espacial y computacional grande (igual a no hacer el histograma y usar la tabla directamente)
-

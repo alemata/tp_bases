@@ -59,14 +59,12 @@
 \setcounter{section}{-1}
 
 \newpage
-\section{Classic Histogram and Distribution Steps}
-\subsection{Introducción}
+\section{Introducción}
 
-Tanto Classic Histogram como Distrbution Steps son estimadores de tuplas que satisfacen
-una condicion. Se puede realizar una búsqueda por aquellas tuplas que cumplan una condición
-de igualdad, por menor o menor igual y por mayor o mayor igual a cierto valor.
-Los estimadores son utilizados en las bases de datos en el proceso de seleccionar un plan
-de ejecucion óptimo al momento de realizar una consulta.
+Tanto Classic Histogram como Distrbution Steps son estimadores de aquellas tuplas que satisfacen una condición dada. Se puede realizar una búsqueda por aquellas tuplas que cumplan una condición de igualdad, por menor o menor igual y por mayor o mayor igual a cierto valor. Los estimadores son utilizados en las bases de datos en el proceso de seleccionar un plan de ejecucion óptimo 
+al momento de realizar una consulta.
+
+Además, se desarrolla un estimador propio al que se lo denomina Group Histogram. El mismo cumple con la misma función que los otros dos estimadores, pero presenta un rendimiento diferente. 
 
 Son varios los factores que se involucran en el cálculo de estimadores. Alguno de ellos
 son la precisión, la cantidad de información que contenga la base de datos, los errores
@@ -74,12 +72,21 @@ en la estimación, el espacio que consume el estimador y la estructura para cons
 información requerida. Cada uno de estos factores se ajustan al modificar algunas variables
 que son pasadas por parámetros a los algoritmos de los estimadores.
 
-Las variables en cuestión son:
+Las variables en cuestión Las variables en cuestión para el Classic Histogram y el Distribution Steps son:
 \begin{itemize}
 \item La tabla a la que se desea realizar las consultas,
-\item Una columna
+\item Una columna,
 \item Una variable denominada PARAM que representan la cantidad en la que se va a agrupar
 los datos de la base, es decir, la cantidad de steps.
+\end{itemize}
+
+
+Por otro lado, el Group Histogram requiere las siguientes variables:
+\begin{itemize}
+	\item La tabla a la que se desea realizar las consultas,
+	\item Una columna,
+  	\item Size, que representa la cantidad de steps,
+  	\item Threshold, es decir un máximo error permitido.
 \end{itemize}
 
 Los steps denotan la cantidad en la que se dividen los conjuntos de datos. Por lo tanto,
@@ -91,9 +98,13 @@ con Classic Histogram y evaluando diferentes factores. Principalmente se tiene e
 el costo temporal y espacial de la construcción de las estructuras requeridas por el
 estimador, el costo temporal de la consulta y el error que comete en la misma.
 
-\subsection{Análisis - EJERCICIO b1}
+Luego, se realizaran experimentos con el objetivo de comparar los tres estimadores nombrados y observar sus comportamientos.
 
-Para entender el funcionamiento de ambos estimadores, se creó el siguiente caso simple de prueba.
+\newpage
+\section{Análisis de métodos}
+\subsection{Classic Histogram vs. Distribution Steps}
+\subsubsection{Performance}
+Para entender el funcionamiento del Classic Histogram y del Distribution Steps, se creó el siguiente caso simple de prueba:
 
 \begin{table}[htdp]
   \begin{center}
@@ -102,29 +113,25 @@ Para entender el funcionamiento de ambos estimadores, se creó el siguiente caso
        Cantidad & 1 & 1 & 0 & 1 & 12 & 1 & 0 & 2 & 0 & 1 & 0 & 0 & 1 \\ \hline
     \end{tabular}
   \end{center}
-  \caption{New Table}
-  \label{tab:newTable}
 \end{table}
 
 
-Se espera que `Distrution steps` tenga mejor performance pues, como bien indica el \textit{paper},
-soluciona el problema que se tiene con el `Classic Histogram` manejando la altura
-de los \textbf{bins}.
+Se espera que `Distrution steps` presente un mejor rendimiento pues, como indica el \textit{paper} (Piatetsky),
+se soluciona el problema existente en `Classic Histogram`, manejando la altura
+de los bins.
 
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.6\textwidth]{./imagenes/ejb1_ejemplo_classic_y_real.png}
-  \caption{Comparacion Classic vs. Real}
+  \caption{Comparación: Classic Histogram vs. Resultado Exacto}
 \end{figure}
 
 
-Tomemos como ejemplo la \textit{selectividad de 5}.
-En la \textit{figura 1} vemos que la selectividad es de $0.65$ pues queda agrupado junto
-con \textit{4} que es un valor que aparece muchas veces. Sin embargo, los datos reales nos
-indican que deberia ser \textit{0.05} ya que tiene pocas apariciones.
+Tomando como ejemplo la $selectividad de 5$.
+En la \textit{Figura 1} se observa que la selectividad es de $0.65$, debido a que queda agrupado junto
+con $4$, que que aparece muchas veces en el resultado. Sin embargo, los datos reales indican que deberia ser $0.05$, ya que tiene menor cantidad de apariciones.
 
-Como vemos este es un caso \textbf{no favorable} para \textbf{Classic Histogram} y
-muestra la ventaja de controlar la altura de los \textit{bins}.
+Como se puede ver, este es un caso \textbf{no favorable} para Classic Histogram. Por otro lado, se puede denotar la ventaja de controlar la altura de los bins.
 
 
 \begin{figure}[h!]
@@ -134,9 +141,9 @@ muestra la ventaja de controlar la altura de los \textit{bins}.
 \end{figure}
 
 
-Para el mismo ejemplo, examinamos la \textit{selectividad de 5} nuevamente con el nuevo histograma.
-Podemos observar que esta vez, la selectividad es de $0.25$. Si bien tambien se desvia del
-valor real ($0.05$), la diferencia del error es significativa comparada con \textbf{Classic Histogram}.
+Para el mismo ejemplo utilizado anteriormente, se examina la $selectividad de 5$ nuevamente con el estimador Distribution Steps.
+Se podrá observar, que la selectividad es de $0.25$. Si bien también se desvia del
+valor real ($0.05$), la diferencia del error es significativa comparada con el estimador Classic Histogram.
 
 
 Basándose en el ejemplo planteado, se observa que el comportamiento de los distintos estimadores
@@ -145,18 +152,11 @@ Por ejemplo, cuando los datos están agrupados, \textbf{Distribucion Steps} brin
 error en la estimación pero, cuando los datos estan dispersos el error del estimador es
 mucho mayor que el que presenta \textbf{Classic Histogram}.
 
-A continuación se experimentará con datos que siguen una distribución uniforme o normal.
-
-
-[Ale dice q aclaremos q esto se explica mas adelante]
-
 
 \subsubsection{Generación casos de prueba}
-Los casos de prueba que se van a utilizar para el análisis del comportamiento de ambos
-estimadores se generarán de manera aleatoria. Se define una función que genera números
+Los casos de prueba que se van a utilizar para el análisis del comportamiento de los
+estimadores, se generarán de manera aleatoria. Se define una función que genera números
 aleatorios que siguen una distribucion normal o uniforme.
-
-
 
 \subsubsection{Factores}
 
@@ -236,8 +236,6 @@ el valor de tupla deseado.
 
 \end{itemize}
 
-\subsection{Ejercicio b2 - Cambiar nombre}
-
 \subsubsection{Classic Histogram}
 
 Como explicamos anteriormente, el \textbf{param} indica la cantidad de bins que generamos.
@@ -291,13 +289,6 @@ la cantidad de \textit{steps}.
 
 
 \subsubsection{Group}
-
-A diferencia de los histogramas anteriores, este cuenta con dos parametros.
-
-\begin{itemize}
-  \item size - cantidad de bins
-  \item threshold - maximo error permitido
-\end{itemize}
 
 Como este Histograma es una modificacion de \textit{Classic Histogram}, obtendriamos la misma
 conclusion al variar el \textbf{size}, el equivalente de \textbf{params}.
@@ -423,5 +414,30 @@ A continucacion, se muestra otro grafico con una varianza de $0.01$
 \end{figure}
 
 La diferencia con el grafico anterior es notoria con respecto a group histograms. Esto se debe a que la varianza pasa por parametro es lo suficientemente baja para que se genere una mejora en todas las columnas de la base de datos. 
+
+
+\section{Ejemplos de la vida cotidiana}
+
+\subsection{Distribución Normal}
+\begin{itemize}
+\item Ejemplo 1: Un ejemplo de la vida real cuya información presenta una distribución normal, puede ser el de los datos metereológicos correspondientes a temperaturas, lluvias, etc. 
+
+\item Ejemplo 2: Otro ejemplo es el de la vida media de un producto electrónico. Al fabricarlo, se espera un tiempo de vida útil, pero el mismo puede ocurrir ser menor o mayor según el uso que se le de, mientras que el esperado en general se cumplirá. 
+
+\item Dataset:
+
+\end{itemize}
+
+\subsection{Distribución Uniforme}
+\begin{itemize}
+\item Ejemplo 1: En la vida real se puede observar que las edades de las personas de cierta ciudad presentan una distrubución informe. 
+
+\item Ejemplo 2: Otro caso a tener en cuenta, que respeta una distribución uniforme es el de las frecuencias en las que un tren en Buenos Aires arriba a una estación. Se tiene en cuenta únicamente el horario en el que el tren funciona. 
+
+\item Dataset:
+
+\end{itemize}
+
+
 
 \end{document}

@@ -467,10 +467,72 @@ A continucacion, se muestra otro grafico con una varianza de $0.01$
 \newpage
 \begin{figure}
   \centering
-  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_normal_t_001.png}
+  \includegraphics[scale=0.6]{./imagenes/ejb2_normal_t_001.png}
   \caption{Comparacion Classic vs. Step para distribucion normal}
 \end{figure}
 
 La diferencia con el grafico anterior es notoria con respecto a Group Histogram. Esto se debe a que la varianza pasa por parametro es lo suficientemente baja para que se genere una mejora en todas las columnas de la base de datos. 
+
+
+
+\newpage
+
+\section{DATASETS}
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{./imagenes/ejc1_p_100.png}
+  \caption{Student Test apareado}
+\end{figure}
+
+
+El \textit{valor p} nos muestra la probabilidad de haber obtenido el resultado si suponemos que la hipótesis nula es cierta. Si el \textit{valor p} es inferior a $0.1$ nos indica que lo más probable es que la hipótesis de partida sea falsa, es decir, que las dos muestras difieren por mucho.
+
+\newpage
+
+\subsection{Distribution Steps - Cota de error}
+
+Para verificar las cotas propuestas por los Autores, tomamos tres diferentes casos:
+
+\begin{itemize}
+\item 2  Steps
+\item 5  Steps
+\item 10 Steps
+\end{itemize}
+
+Utilizando el histograma con estos parametros, las cotas, respectivamente, son:
+
+\begin{itemize}
+\item $0.5$
+\item $0.2$
+\item $0.1$
+\end{itemize}
+
+[HACER UNA TABLA MEJOR, CON ESOS DATOS] 
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{./imagenes/ejc2_cota_juntos.png}
+  \caption{Cotas de error - Distribution Steps}
+\end{figure}
+
+En la \textit{figura 12} detallamos los \textit{errores maximos} por cada columna de la Base de Datos de prueba, y a su vez, trazamos la cota de error esperada.
+Como bien dicen los Autores, se cumple la cota $1/s$.
+
+
+\subsection{Variacion}
+
+Luego de haber hecho un analisis sobre las estructuras, la complejidad, consumo de memoria, etc, nos falta comparar la performance de este Histograma.
+
+Dada la base de datos de la catedra, construimos por cada columna el histograma variando los \textit{steps}. Al mismo tiempo, calculamos el error promedio cometido por la estimacion y lo volcamos en el siguiente grafico.
+
+\begin{figure}
+  \centering
+  \includegraphics[scale=0.6]{./imagenes/ejc2_variacion.png}
+  \caption{Variacion}
+\end{figure}
+
+
+Con los datos de la catedra, podemos concluir lo mismo que anteriormente. A medida que incrementamos la cantidad de steps del histograma, el error promedio o \textit{performance} mejora. De hecho, se ve claramente como la curva es logaritmica y se corresponde con la cota $1/s$
 
 \end{document}

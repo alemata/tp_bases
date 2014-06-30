@@ -17,6 +17,8 @@ class DistributionSteps(estimators.Estimator):
       "SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
 
     self.step_height = math.floor(self.total_elem / self.parameter)
+    if self.step_height == 0:
+      self.step_height = 1
     self.steps = []
 
     offset = self.step_height - 1

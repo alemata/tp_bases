@@ -16,7 +16,7 @@ class EstimatorGroup(estimators.Estimator):
     self.min_value, self.max_value, self.total_elem = c.execute(
         "SELECT min({0}), max({0}), count(*) FROM {1}".format(self.column, self.table)).fetchone()
 
-    self.bucket = int(math.floor((self.max_value - self.min_value) / self.parameter['size']))
+    self.bucket = int(math.ceil((self.max_value - self.min_value) / float(self.parameter['size'])))
     prev_value = self.min_value
     next_value = int(prev_value)
     total = 0

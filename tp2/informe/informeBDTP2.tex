@@ -59,8 +59,51 @@
 \setcounter{section}{-1}
 
 \newpage
-\section{Introducción}
+\section{Ejemplos de la vida cotidiana}
+Para comenzar, se presentan ejemplos de la vida cotidiana, es decir, ejemplos reales, para la distribución normal y uniforme de datos. 
 
+\subsection{Distribución normal}
+\begin{itemize}
+\item Ejemplo 1: Un ejemplo de la vida real cuya información presenta una distribución normal, puede ser el de los datos metereológicos correspondientes a temperaturas, lluvias, etc. 
+
+\item Ejemplo 2: Otro ejemplo es el de la vida media de un producto electrónico. Al fabricarlo, se espera un tiempo de vida útil, pero el mismo puede ocurrir ser menor o mayor según el uso que se le de, mientras que el esperado en general se cumplirá. 
+
+\item Dataset: Luego de analizar diferentes casos, se encontró que la temperatura desde el año 1911 al 1972 en el mes de Enero, presentan una distribución normal de los datos. A continuación se presenta la tabla con los datos \footnote{http://infometeoba.blogspot.com.ar/}:
+
+\begin{table}[htdp]
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|} \hline
+       Año  & 1911 & 1913 & 1915 & 1916 & 1921 & .. & 1966& 1968& 1969& 1970& 1971& 1972 \\ \hline
+       Temperatura Mínima & 16,8 & 15,9 & 17 & 17 & 15,8 & .. & 19 & 18,6 & 18,9 & 19,4 & 18,5 & 20,2 \\ \hline
+    \end{tabular}
+  \end{center}
+\end{table} 
+
+Además, se observa a continuación el gráfico por el cual se determina si efectivamente el dataset cumple con una distribución normal.
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{./imagenes/DatasetNormal.png}
+  \caption{}
+\end{figure}
+
+Como se puede observar, el dataset cumple con una distribución normal de los datos. 
+
+
+\end{itemize}
+
+\subsection{Distribución Uniforme}
+\begin{itemize}
+\item Ejemplo 1: En la vida real se puede observar que las edades de las personas de cierta ciudad presentan una distrubución informe. 
+
+\item Ejemplo 2: Otro caso a tener en cuenta, que respeta una distribución uniforme es el de las frecuencias en las que un tren en Buenos Aires arriba a una estación. Se debe tener en cuenta únicamente el horario en el que el tren funciona. 
+
+\item Dataset:
+
+\end{itemize}
+
+\newpage
+\section{Análisis de métodos}
 Tanto Classic Histogram como Distrbution Steps son estimadores de aquellas tuplas que satisfacen una condición dada. Se puede realizar una búsqueda por aquellas tuplas que cumplan una condición de igualdad, por menor o menor igual y por mayor o mayor igual a cierto valor. Los estimadores son utilizados en las bases de datos en el proceso de seleccionar un plan de ejecucion óptimo 
 al momento de realizar una consulta.
 
@@ -98,12 +141,9 @@ con Classic Histogram y evaluando diferentes factores. Principalmente se tiene e
 el costo temporal y espacial de la construcción de las estructuras requeridas por el
 estimador, el costo temporal de la consulta y el error que comete en la misma.
 
-Luego, se realizaran experimentos con el objetivo de comparar los tres estimadores nombrados y observar sus comportamientos.
-
+Luego, se realizaran experimentos con el objetivo de comparar los tres estimadores nombrados y observar sus comportamientos. 
 \newpage
-\section{Análisis de métodos}
-\subsection{Classic Histogram vs. Distribution Steps}
-\subsubsection{Performance}
+\subsection{Performance}
 Para entender el funcionamiento del Classic Histogram y del Distribution Steps, se creó el siguiente caso simple de prueba:
 
 \begin{table}[htdp]
@@ -122,7 +162,7 @@ de los bins.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb1_ejemplo_classic_y_real.png}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb1_ejemplo_classic_y_real.png}
   \caption{Comparación: Classic Histogram vs. Resultado Exacto}
 \end{figure}
 
@@ -133,7 +173,7 @@ con $4$, que que aparece muchas veces en el resultado. Sin embargo, los datos re
 
 Como se puede ver, este es un caso \textbf{no favorable} para Classic Histogram. Por otro lado, se puede denotar la ventaja de controlar la altura de los bins.
 
-
+\newpage
 \begin{figure}[h!]
   \centering
   \includegraphics[width=0.6\textwidth]{./imagenes/ejb1_ejemplo_steps.png}
@@ -153,17 +193,17 @@ error en la estimación pero, cuando los datos estan dispersos el error del esti
 mucho mayor que el que presenta \textbf{Classic Histogram}.
 
 
-\subsubsection{Generación casos de prueba}
+\subsection{Generación casos de prueba}
 Los casos de prueba que se van a utilizar para el análisis del comportamiento de los
 estimadores, se generarán de manera aleatoria. Se define una función que genera números
 aleatorios que siguen una distribucion normal o uniforme.
 
-\subsubsection{Factores}
+\subsection{Factores}
 
 Debido a la estructura que se utiliza para construir los estimadores y el algoritmo de
 construcción de los mismos, se podrá afirmar que:
 
-\paragraph{Classic Histogram}
+\subsubsection{Classic Histogram}
 % Usamos un diccionario
 \begin{itemize}
 
@@ -200,7 +240,7 @@ O(1)
 Lo único se se requere es el acceso al diccionario, lo cual presenta un costo constante.
 
 \end{itemize}
-\paragraph{Distribution Steps}
+\subsubsection{Distribution Steps}
 % Usamos un Array
 
 \begin{itemize}
@@ -236,129 +276,104 @@ el valor de tupla deseado.
 
 \end{itemize}
 
-\subsubsection{Classic Histogram}
+\subsubsection{Distribution Group - HACER}
 
-Como explicamos anteriormente, el \textbf{param} indica la cantidad de bins que generamos.
+\begin{itemize}
+\item Costo de creación del estimador:
+\item Costo espacial del estimador:
+\item Costo de consulta:
+\end{itemize}
 
-Suponemos que cuando \textbf{param} toma un valor mas grande, disminuye el error en la estimación,
+
+\subsection{Impacto en la variación de parámetros.}
+A continuación, analizaremos el impacto de la variación de los parámetro para los estimadores y su consecuencia. En primer lugar, observaremos el comportamiento de Classic Histogram. 
+
+Como se explicó anteriormente, el \textbf{param} indica la cantidad de bins que generamos. Se supone que, cuando \textbf{param} toma un valor mas grande, disminuye el error en la estimación,
 pues agrupa menor cantidad de valores por \textit{bin}.
 
-Ademas, suponemos que la distribucion de los datos no influencia en el resultado. Si bien
-el histograma puede tener menor error con una determinada distribucion, la cantidad de
-\textit{bins} suponemos que produciria una reduccion de error mas significativa.
+Además, la distribución de los datos no influencia en el resultado. El histograma puede tener un menor error con una determinada distribución, pero la cantidad de
+\textit{bins} se supone que produciría una reducción del error más significativa.
 
-Veamos el siguiente gráfico que muestra el error promedio que comete el histograma variando
+Se observa el siguiente gráfico que presenta el error promedio que comete el estimador, variando
 la cantidad de \textit{bins}.
 
-\begin{figure}[h!]
+\begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_classic_parameter_variation.png}
-  \caption{Classic Histogram - Variacion del parametro}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_classic_parameter_variation.png}
+  \caption{Classic Histogram - Variación del parámetro}
 \end{figure}
 
+\newpage
+Como se esperaba, se observa una mejora a medida que se agranda la variable \textbf{param}.
+Esto ocurre porque al aumentar la variable, se separan mejor los casos y, entonces se genera una estimación más precisa.
+Sin embargo, por cada incremento de \textit{bin}, el costo espacial se incrementa pues se requiere
+más espacio de memoria para almacenar las estadisticas.
 
-Como era de esperar, mejora a medida que agrandamos el \textbf{param}.
-Esto es porque separa mejor los casos y entonces se tiene una estimacion mas precisa.
-Sin embargo, por cada incremento de \textit{bin}, el costo se incrementa pues se requiere
-mas espacio para almacenar las estadisticas.
+Si implementamos que $param \rightarrow n$ (siendo $n$ la cantidad de valores distintos), nos
+resultaría una estimación perfecta, pero con un costo muy alto, tanto espacial como computacional.
 
-Si hacemos que $param \rightarrow n$ (siendo n la cantidad de valores distintos), nos
-daria la estimación perfecta, pero con un costo altisimo tanto espacial como computacional.
-
-
-
-\subsubsection{Distribution Steps}
-
-Para este histograma, partimos con una suposicion similar, pues la diferencia es que mientras
-mas \textit{steps} se crean, mas chicos son los \textit{bins} que agrupan valores.
+En segundo lugar, analizamos las consecuencias de variar la cantidad de steps en Distribution Steps. Para este estimador, partimos con una suposicion similar, pues la diferencia es que mientras
+más \textit{steps} se crean, más chicos son los \textit{bins} que agrupan valores.
 
 
-Veamos el siguiente gráfico que muestra el error promedio que comete el histograma variando
+Se puede ver el siguiente gráfico, que muestra el error promedio que comete el histograma variando
 la cantidad de \textit{bins}.
 
-\begin{figure}[h!]
+\newpage
+\begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_step_parameter_variation.png}
-  \caption{Distribution Steps - Variacion del parametro}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_step_parameter_variation.png}
+  \caption{Distribution Steps - Variación del parametro}
 \end{figure}
 
-Nuevamente nuestra hipotesis se confirma. El costo tambien se ve incrementado por
+Nuevamente, nuestra hipótesis es confirmada. El costo espacial y computacional también se incrementa al aumentar la 
 la cantidad de \textit{steps}.
 
+Por último, observamos el comportamiento para el estimador Group Histogram. 
+Como este estimador consiste en una modificación de Classic Histogram, se debería obtener la misma
+conclusión al variar el \textbf{size}, que es el equivalente de \textbf{params} en el estimador Classic.
 
-
-
-\subsubsection{Group}
-
-Como este Histograma es una modificacion de \textit{Classic Histogram}, obtendriamos la misma
-conclusion al variar el \textbf{size}, el equivalente de \textbf{params}.
-
-Por lo tanto, nos queda ver como evoluciona la estimacion cuando modificamos el
+Por lo tanto, se deberá ver como evoluciona la estimacion cuando se modifica el
 \textbf{threshold}, es decir aumentando y disminuyendo el maximo error permitido.
+Se espera que, a medida que se achica el \textbf{threshold}, la selectividad es mas precisa.
 
-Esperamos ver, que a medida que se achica el \textbf{threshold}, la selectividad es mas precisa.
-
-
-Veamos el siguiente gráfico que muestra el \textit{maximo error} que comete el histograma
-variando el \textbf{threshold}.
-
-\begin{figure}[h!]
+El siguiente gráfico muestra el \textit{máximo error} que comete el estimador
+al variar el \textbf{threshold}.
+\newpage
+\begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_group_parameter_variation.png}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_group_parameter_variation.png}
   \caption{Distribution Group - Variacion del threshold}
 \end{figure}
 
 
-En el caso de la distribucion uniforme, para sorpresa nuestra, el maximo error llega a un
-techo y no sigue creciendo. No lo supusimos desde el principio, pero cobra sentido si
-recordamos que los datos provienen de una distribucion uniforme, donde la varianza no es
-grande. Por eso solo podemos apreciar las grandes mejoras, con un \textbf{threshold} muy pequeño.
+En el caso de la distribución uniforme el máximo error llega a un
+techo y no sigue creciendo. No se supuso desde el principio, pero cobra sentido si
+se recuerda que los datos provienen de una distribución uniforme, donde la varianza no es
+grande. Por eso sólo podemos apreciar las grandes mejoras con un \textbf{threshold} muy pequeño.
 
-Para la distribucion normal, el grafico si muestra como mejora la presicion o como se pierde
-para los distintos valores del \textbf{threshold}. Recordemos que una vez cruzado el
-\textbf{threshold} definimos un \textit{bin} por cada valor distinto, esto nos da mayor
-precision pero aumenta la memoria consumida por la estructura y al mismo tiempo el tiempo
+Para la distribución normal, el gráfico muestra como mejora la precisión o como se pierde
+para los distintos valores del \textbf{threshold}. Se debería recordar, que una vez cruzado el
+\textbf{threshold} se define un \textit{bin} por cada valor distinto, lo cual genera una mayor
+precision pero aumenta la memoria consumida por la estructura y, al mismo tiempo, el tiempo
 consumido para generarla.
 
 
-
-\subsection{Ejercicio 1 b 3}
-
---- Analice cómo impacta el uso de distintas distribuciones como entrada para los tres estimadores. ---
-
-
-Para el estimador GROUP es muy importante conocer la varianza de la distribucion pues, nos
-basamos en ella para encontrar un valor aceptable para el error.
-
-Es decir, nuestro estimador ofrece una mejora al Classic Histogram cuando la distribucion
-de los datos tiene un valor elevado de Varianza.
-
-
-
-
-
-
-/////// NO CAMBIA
-
-
-
+\subsection{Impacto de acuerdo a la distribución de los datos.}
 \subsubsection{Distribución Uniforme}
 
-Partimos con una base de datos cuya información cumple con una distribución uniforme.
+Se parte con una base de datos cuya información cumple con una distribución uniforme.
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb3_uniforme.png}
-  \caption{Comparacion Classic vs. Step para distribucion uniforme}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb3_uniforme.png}
+  \caption{Comparacion Classic, Step y Gruop para datos con distribución uniforme}
 \end{figure}
 
-
-Con respecto al error de factor en la estimacion, ambos estimadores no difieren
+\newpage
+Con respecto al error de factor en la estimación, ambas estimaciones no difieren
 significativamente en sus resultados. Dado que al tener los datos distribuidos de forma
 uniforme, la probabilidad de cada tupla es $1/n$, siendo $n$ la cantidad total de tuplas de la tabla.
-
-( Para rango |a-b|/(max - min))
-
 
 Debido a que se los compara con igual cantidad de steps, entonces la altura, en el caso de
 \textbf{Classic Histogram}, y el ancho, en el \textbf{Distribution Steps}, son similares.
@@ -368,7 +383,7 @@ una altura similar.
 Sin embargo, teniendo en cuenta el factor de costos de creación, el estimador
 \textbf{Distribution Steps} es más costoso. El motivo principal es debido al ordenamiento
 de los datos antes de construir el histograma requerido. Luego sigue el \textbf{Group Histogram}
-pues requiere \textit{bins} particulares para los algunos elementos. Y por ultimo se encuentra el \textit{Classic Histogram}.
+pues requiere \textit{bins} particulares para los algunos elementos. Y por último se encuentra el \textit{Classic Histogram}.
 
 En conclusión, para datos que cumplen una distribución uniforme, sugerimos implementar
 \textbf{Classic Histogram}, debido al menor costo de construcción del histograma.
@@ -376,68 +391,43 @@ En conclusión, para datos que cumplen una distribución uniforme, sugerimos imp
 
 \subsubsection{Distribución Normal}
 
-Partimos con una base de datos que la información sigue una distribución normal.
+A partir de una base de datos que la información que sigue una distribución normal se observan los siguientes resultados. Se realizaron experimentos modificando la varianza para observar el comportamiento de los tres estimadores.
 
-Se hicieron experimentos modificando la varianza para observar cual es el comportamiento de los tres estimadores.
-
-Se realizaron diversos graficos comparandolos en simultaneo teniendo en cuenta el parametro dicho.
+Se realizaron diversos graficos comparandolos en simultáneo teniendo en cuenta el parametro dicho. 
 A continuacion se presenta un ejemplo con una varianza igual a $0,05$. 
 
 \begin{figure}[h!]
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_normal_t_005.png}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_normal_t_005.png}
   \caption{Comparacion Classic vs. Step para distribucion normal}
 \end{figure}
 
-Como se puede ver, con una varianza chica, el error maximo es muy bajo en el estimador de distribution steps. En cambio, para classic histograms y group histrograms es mas alto, aunque similar entre si. Esto se debe a que los resultados de gruop histograms son muy similares con respecto a classic histograms si no se acepta un error alto, ya que no se agregan bins. De esta manera no se puede notar la mejora del estimador.
+Como se puede ver, con una varianza chica, el error maximo es muy bajo en el estimador de Distribution Steps. En cambio, para Classic Histogram y Group Histrograms es más alto, aunque similar entre si. Esto se debe a que los resultados de Gruop Histogram son muy similares con respecto a Classic Histogram si no se acepta un error alto, ya que no se agregan bins. De esta manera no se puede notar la mejora del estimador.
 
 
 Luego se presenta un experimento realizado con una varianza igual a $0,03$. 
-
+\newpage
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_normal_t_003.png}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_normal_t_003.png}
   \caption{Comparacion Classic vs. Step para distribucion normal}
 \end{figure}
 
-Con respecto al grafico anterior se puede observar una diferencia del maximo error para algunas columnas en el estimador Group Histograms. En los otros dos estimadores el error maximo sigue siendo similar ya que el cambio en la varianza no modifica sus resultados. 
+Con respecto al grafico anterior se puede observar una diferencia del máximo error para algunas columnas en el estimador Group Histogram. En los otros dos estimadores el error máximo sigue siendo similar ya que el cambio en la varianza no modifica sus resultados. 
 
-La diferencia en group histograms se debe a que al disminuir la varianza se le esta indicando al algoritmo que el error maximo debe ser menor. Por lo tanto el estimador generara un mayor numero de bins aumentando asi la precision en los calculos. No ocurre una mejora para todas las columnas, ya que la varianza no es lo suficientemente baja. 
+La diferencia en Group Histograms se debe a que al disminuir la varianza se le esta indicando al algoritmo que el error maximo debe ser menor. Por lo tanto el estimador generara un mayor numero de bins aumentando asi la precision en los calculos. No ocurre una mejora para todas las columnas, ya que la varianza no es lo suficientemente baja. 
 
+Por lo tanto, para el estimador Group es importante conocer la varianza de la distribución, pues nos
+basamos en ella para encontrar un error aceptable. Es decir, el estimador ofrece una mejora al Classic Histogram cuando la distribución de los datos tiene un valor elevado de varianza.
 
 A continucacion, se muestra otro grafico con una varianza de $0.01$
-
+\newpage
 \begin{figure}
   \centering
-  \includegraphics[width=0.6\textwidth]{./imagenes/ejb2_normal_t_001.png}
+  \includegraphics[width=0.7\textwidth]{./imagenes/ejb2_normal_t_001.png}
   \caption{Comparacion Classic vs. Step para distribucion normal}
 \end{figure}
 
-La diferencia con el grafico anterior es notoria con respecto a group histograms. Esto se debe a que la varianza pasa por parametro es lo suficientemente baja para que se genere una mejora en todas las columnas de la base de datos. 
-
-
-\section{Ejemplos de la vida cotidiana}
-
-\subsection{Distribución Normal}
-\begin{itemize}
-\item Ejemplo 1: Un ejemplo de la vida real cuya información presenta una distribución normal, puede ser el de los datos metereológicos correspondientes a temperaturas, lluvias, etc. 
-
-\item Ejemplo 2: Otro ejemplo es el de la vida media de un producto electrónico. Al fabricarlo, se espera un tiempo de vida útil, pero el mismo puede ocurrir ser menor o mayor según el uso que se le de, mientras que el esperado en general se cumplirá. 
-
-\item Dataset:
-
-\end{itemize}
-
-\subsection{Distribución Uniforme}
-\begin{itemize}
-\item Ejemplo 1: En la vida real se puede observar que las edades de las personas de cierta ciudad presentan una distrubución informe. 
-
-\item Ejemplo 2: Otro caso a tener en cuenta, que respeta una distribución uniforme es el de las frecuencias en las que un tren en Buenos Aires arriba a una estación. Se tiene en cuenta únicamente el horario en el que el tren funciona. 
-
-\item Dataset:
-
-\end{itemize}
-
-
+La diferencia con el grafico anterior es notoria con respecto a Group Histogram. Esto se debe a que la varianza pasa por parametro es lo suficientemente baja para que se genere una mejora en todas las columnas de la base de datos. 
 
 \end{document}

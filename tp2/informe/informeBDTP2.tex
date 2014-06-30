@@ -246,42 +246,73 @@ Lo único se se requere es el acceso al diccionario, lo cual presenta un costo c
 \begin{itemize}
 
 \item Costo de creación del estimador:
+
 \begin{equation}
-O(n*log(n) + n + n)
+O(n*log(n) + n + n) => O(n*log(n))
 \end{equation}
-\begin{equation}
-O(n*log(n))
-\end{equation}
+
 El algoritmo consiste en el ordenamiento de las tuplas de acuerdo a la columna pasada por
 parámetro. El ordanamiento lo realiza el motor de la base de datos en costo $O(n*log(n))$.
 Por otro lado se deberá calcular el máximo, mínimo y total de tuplas existentes en la base.
 
 \item Costo espacial del estimador:
+
 \begin{equation}
-O(b + 1) \\
+O(b + 1) => O(b)
 \end{equation}
-\begin{equation}
-O(b)
-\end{equation}
+
 Se requiere unicamente almacenar un array con las tuplas que se encuentran en las distintas
 posiciones de los steps. Además, se deberá almacenar la cantidad de tuplas totales
 existentes en la tabla pasada por parámetro.
 
 \item Costo de consulta:
+
 \begin{equation}
 O(n)
 \end{equation}
+
 Tanto para una búsqueda por igualdad o por menor, se deberá recorrer el array buscando
 el valor de tupla deseado.
 
 \end{itemize}
 
-\subsubsection{Distribution Group - HACER}
+
+
+\subsubsection{Distribution Group}
 
 \begin{itemize}
-\item Costo de creación del estimador:
+
+\item Costo de creación de estimador:
+Como es una modificación del \textbf{Classic Histogram}, el costo de creación no cambia.
+
+\begin{equation}
+O(b * n)
+\end{equation}
+
 \item Costo espacial del estimador:
+
+En caso promedio, se comporta como \textbf{Classic Histogram}
+\begin{equation}
+O(b)
+\end{equation}
+
+Pero en el caso que el \textbf{threshold} sea muy bajo, o la varianza de la distribucion de los datos sea muy alta, crea un bin por cada valor. Esto dejaria un costo de
+
+\begin{equation}
+O(2 * n) => O(n)
+\end{equation}
+
+
+Se utiliza un diccionario que presenta un costo espacial del valor pasado en PARAM por dos,
+ya que por cada bin se almacen dos valores más (la cantidad y el acumulado hasta ese valor).
+Por otro lado, se requiere almacenar el máximo, mínimo y la cantidad total.
+
+
 \item Costo de consulta:
+\begin{equation}
+O(1)
+\end{equation}
+Lo único se se requere es el acceso al diccionario, lo cual presenta un costo constante.
 \end{itemize}
 
 
